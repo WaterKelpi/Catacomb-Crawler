@@ -95,10 +95,24 @@ public class EntityMovement : MonoBehaviour
                                         newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
                                         if (newAttack.GetComponent<WeaponHandler>().NeedsRotate) { newAttack.transform.eulerAngles = new Vector3(0, 0, 90); }
                                         break;
+                                    case entityDirection.NE:
+                                        newAttack = Instantiate(eManager.EntityArmor[7] == null ? unarmedAttack : eManager.EntityArmor[7].weaponPrefab, ((Vector2)transform.position +
+                                            (eManager.EntityArmor[7] == null ? unarmedAttack.GetComponent<WeaponHandler>().WeaponOffsetVert : eManager.EntityArmor[7].weaponPrefab.GetComponent<WeaponHandler>().WeaponOffsetVert) +
+                                            (eManager.EntityArmor[7] == null ? unarmedAttack.GetComponent<WeaponHandler>().WeaponOffsetHorz : eManager.EntityArmor[7].weaponPrefab.GetComponent<WeaponHandler>().WeaponOffsetHorz)), Quaternion.identity);
+                                        newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
+                                        if (newAttack.GetComponent<WeaponHandler>().NeedsRotate) { newAttack.transform.eulerAngles = new Vector3(0, 0, 45); }
+                                        break;
                                     case entityDirection.E:
                                         newAttack = Instantiate(eManager.EntityArmor[7] == null ? unarmedAttack : eManager.EntityArmor[7].weaponPrefab, ((Vector2)transform.position +
                                             (eManager.EntityArmor[7] == null ? unarmedAttack.GetComponent<WeaponHandler>().WeaponOffsetHorz : eManager.EntityArmor[7].weaponPrefab.GetComponent<WeaponHandler>().WeaponOffsetHorz)), Quaternion.identity);
                                         newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
+                                        break;
+                                    case entityDirection.SE:
+                                        newAttack = Instantiate(eManager.EntityArmor[7] == null ? unarmedAttack : eManager.EntityArmor[7].weaponPrefab, ((Vector2)transform.position -
+                                            (eManager.EntityArmor[7] == null ? unarmedAttack.GetComponent<WeaponHandler>().WeaponOffsetVert : eManager.EntityArmor[7].weaponPrefab.GetComponent<WeaponHandler>().WeaponOffsetVert) +
+                                            (eManager.EntityArmor[7] == null ? unarmedAttack.GetComponent<WeaponHandler>().WeaponOffsetHorz : eManager.EntityArmor[7].weaponPrefab.GetComponent<WeaponHandler>().WeaponOffsetHorz)), Quaternion.identity);
+                                        newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
+                                        if (newAttack.GetComponent<WeaponHandler>().NeedsRotate) { newAttack.transform.eulerAngles = new Vector3(0, 0, -45); }
                                         break;
                                     case entityDirection.S:
                                         newAttack = Instantiate(eManager.EntityArmor[7] == null ? unarmedAttack : eManager.EntityArmor[7].weaponPrefab, ((Vector2)transform.position -
@@ -106,10 +120,24 @@ public class EntityMovement : MonoBehaviour
                                         newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
                                         if (newAttack.GetComponent<WeaponHandler>().NeedsRotate) { newAttack.transform.eulerAngles = new Vector3(0, 0, -90); }
                                         break;
+                                    case entityDirection.SW:
+                                        newAttack = Instantiate(eManager.EntityArmor[7] == null ? unarmedAttack : eManager.EntityArmor[7].weaponPrefab, ((Vector2)transform.position -
+                                            (eManager.EntityArmor[7] == null ? unarmedAttack.GetComponent<WeaponHandler>().WeaponOffsetVert : eManager.EntityArmor[7].weaponPrefab.GetComponent<WeaponHandler>().WeaponOffsetVert) -
+                                            (eManager.EntityArmor[7] == null ? unarmedAttack.GetComponent<WeaponHandler>().WeaponOffsetHorz : eManager.EntityArmor[7].weaponPrefab.GetComponent<WeaponHandler>().WeaponOffsetHorz)), Quaternion.identity);
+                                        newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
+                                        if (newAttack.GetComponent<WeaponHandler>().NeedsRotate) { newAttack.transform.eulerAngles = new Vector3(0, 0, -135); }
+                                        break;
                                     case entityDirection.W:
                                         newAttack = Instantiate(eManager.EntityArmor[7] == null ? unarmedAttack : eManager.EntityArmor[7].weaponPrefab, ((Vector2)transform.position -
                                             (eManager.EntityArmor[7] == null ? unarmedAttack.GetComponent<WeaponHandler>().WeaponOffsetHorz : eManager.EntityArmor[7].weaponPrefab.GetComponent<WeaponHandler>().WeaponOffsetHorz)), Quaternion.identity);
                                         newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
+                                        break;
+                                    case entityDirection.NW:
+                                        newAttack = Instantiate(eManager.EntityArmor[7] == null ? unarmedAttack : eManager.EntityArmor[7].weaponPrefab, ((Vector2)transform.position +
+                                            (eManager.EntityArmor[7] == null ? unarmedAttack.GetComponent<WeaponHandler>().WeaponOffsetVert : eManager.EntityArmor[7].weaponPrefab.GetComponent<WeaponHandler>().WeaponOffsetVert) -
+                                            (eManager.EntityArmor[7] == null ? unarmedAttack.GetComponent<WeaponHandler>().WeaponOffsetHorz : eManager.EntityArmor[7].weaponPrefab.GetComponent<WeaponHandler>().WeaponOffsetHorz)), Quaternion.identity);
+                                        newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
+                                        if (newAttack.GetComponent<WeaponHandler>().NeedsRotate) { newAttack.transform.eulerAngles = new Vector3(0, 0, 135); }
                                         break;
                                     default:
                                         break;

@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
- 
 
-[RequireComponent(typeof(EntityStatHandler),typeof(InventoryManager))]
 
-public class EntityManager : MonoBehaviour
-{
+[RequireComponent(typeof(EntityStatHandler), typeof(InventoryManager))]
+
+public class EntityManager : MonoBehaviour {
     AdventureMenuHandler aMH;
     public bool isMoving;
     public Vector2 targetPos;
@@ -39,6 +38,8 @@ public class EntityManager : MonoBehaviour
     List<GameObject> specialMoves;
     public List<GameObject> SpecialMoves { get { return specialMoves; } }
 
+    GameObject objOntopOf;
+    public GameObject ObjOntopOf {get {return objOntopOf;}}
 
     private void Awake() {
         statHandler = GetComponent<EntityStatHandler>();
@@ -93,6 +94,8 @@ public class EntityManager : MonoBehaviour
                     aMH.NewLogMessage(string.Format("{0} picked up {1}!", statHandler.entityName, collision.GetComponent<ItemScript>().Item.itemName));
                     Destroy(collision.gameObject);
                 }
+            } else {
+                objOntopOf = collision.gameObject;
             }
             
         }
@@ -261,19 +264,47 @@ public class EntityManager : MonoBehaviour
                         newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
                         if (newAttack.GetComponent<WeaponHandler>().NeedsRotate) { newAttack.transform.eulerAngles = new Vector3(0, 0, 90); }
                         break;
+                    case entityDirection.NE:
+                        newAttack = Instantiate(specialMoves[moveIndex], ((Vector2)transform.position +
+                            specialMoves[moveIndex].GetComponent<WeaponHandler>().WeaponOffsetVert +
+                            specialMoves[moveIndex].GetComponent<WeaponHandler>().WeaponOffsetHorz), Quaternion.identity);
+                        newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
+                        if (newAttack.GetComponent<WeaponHandler>().NeedsRotate) { newAttack.transform.eulerAngles = new Vector3(0, 0, 45); }
+                        break;
                     case entityDirection.E:
                         newAttack = Instantiate(specialMoves[moveIndex], (Vector2)transform.position + specialMoves[moveIndex].GetComponent<WeaponHandler>().WeaponOffsetHorz, Quaternion.identity);
                         newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
+                        break;
+                    case entityDirection.SE:
+                        newAttack = Instantiate(specialMoves[moveIndex], ((Vector2)transform.position -
+                            specialMoves[moveIndex].GetComponent<WeaponHandler>().WeaponOffsetVert +
+                            specialMoves[moveIndex].GetComponent<WeaponHandler>().WeaponOffsetHorz), Quaternion.identity);
+                        newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
+                        if (newAttack.GetComponent<WeaponHandler>().NeedsRotate) { newAttack.transform.eulerAngles = new Vector3(0, 0, -45); }
                         break;
                     case entityDirection.S:
                         newAttack = Instantiate(specialMoves[moveIndex], (Vector2)transform.position - specialMoves[moveIndex].GetComponent<WeaponHandler>().WeaponOffsetVert, Quaternion.identity);
                         newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
                         if (newAttack.GetComponent<WeaponHandler>().NeedsRotate) { newAttack.transform.eulerAngles = new Vector3(0, 0, -90); }
                         break;
+                    case entityDirection.SW:
+                        newAttack = Instantiate(specialMoves[moveIndex], ((Vector2)transform.position -
+                            specialMoves[moveIndex].GetComponent<WeaponHandler>().WeaponOffsetVert -
+                            specialMoves[moveIndex].GetComponent<WeaponHandler>().WeaponOffsetHorz), Quaternion.identity);
+                        newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
+                        if (newAttack.GetComponent<WeaponHandler>().NeedsRotate) { newAttack.transform.eulerAngles = new Vector3(0, 0, -135); }
+                        break;
                     case entityDirection.W:
                         newAttack = Instantiate(specialMoves[moveIndex], (Vector2)transform.position - specialMoves[moveIndex].GetComponent<WeaponHandler>().WeaponOffsetHorz, Quaternion.identity);
                         newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
                         if (newAttack.GetComponent<WeaponHandler>().NeedsRotate) { newAttack.transform.eulerAngles = new Vector3(0, 0, 180); }
+                        break;
+                    case entityDirection.NW:
+                        newAttack = Instantiate(specialMoves[moveIndex], ((Vector2)transform.position +
+                            specialMoves[moveIndex].GetComponent<WeaponHandler>().WeaponOffsetVert -
+                            specialMoves[moveIndex].GetComponent<WeaponHandler>().WeaponOffsetHorz), Quaternion.identity);
+                        newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
+                        if (newAttack.GetComponent<WeaponHandler>().NeedsRotate) { newAttack.transform.eulerAngles = new Vector3(0, 0, 135); }
                         break;
                     default:
                         break;

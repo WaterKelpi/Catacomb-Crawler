@@ -483,6 +483,8 @@ public class AdventureMenuHandler : MonoBehaviour {
                 case menuType.ground:
                     if (groundPanel.gameObject.activeInHierarchy == false) { groundPanel.gameObject.SetActive(true); }
                     groundText.text = "";
+                    if (playerEntityManager.ObjOntopOf != null) { groundText.text = string.Format("There is a {0} at your feet", playerEntityManager.ObjOntopOf.GetComponent<ItemScript>().Item.itemName); }
+                    else { groundText.text = "There is nothing at your feet"; }
                     break;
                 case menuType.rest:
                     if (restPanel.gameObject.activeInHierarchy == false) { restPanel.gameObject.SetActive(true); }

@@ -13,7 +13,7 @@ public class EntityStatHandler : MonoBehaviour
     public int Exp { get { return exp; } }
 
     public int ExpToNextLv {
-        get { return (int)(Mathf.Pow(level+1, 3) / ((int)entityStats.growthSpeed / 10)); }
+        get { return (int)(Mathf.Pow(level+1, 3) / ((float)entityStats.growthSpeed / 10)); }
     }
 
     public int Level {
@@ -56,7 +56,7 @@ public class EntityStatHandler : MonoBehaviour
     }
 
     int expYield {
-        get { return (entityStats.baseExpYield * level / 7); }
+        get { return (int)((float)entityStats.baseExpYield * (float)level / (float)7); }
     }
     public int ExpYield { get { return expYield; } }
 
@@ -113,8 +113,8 @@ public class EntityStatHandler : MonoBehaviour
     }
 
     public void GainLevel(int amtToGain) {
-        exp = 0;
         level += amtToGain;
+        exp = 0;
     }
 
     public void UpdateStats() {
