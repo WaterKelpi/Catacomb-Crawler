@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fea1872dedeecb458953226ead526ef, type: 3}
+  m_Name: Nuts
+  m_EditorClassIdentifier: 
+  itemType: 2
+  itemName: Nuts
+  maxStack: 10
+  numInStack: 3
+  itemSprite: {fileID: -4086528965688745656, guid: bceef3177b6851a44ac84a6b917c46ea,
+    type: 3}
+  consumable: 1
+  throwable: 0
+  useable: 0
+  equipable: 0
+  bellyChange: 10
+  healthChange: 0
+  thrownDamage: 0
+  statBoosts: 000000000000000000000000000000000000000000000000
+  speedBoost: 0
+  equipType: 5
+  weaponPrefab: {fileID: 0}
+  baseSaleAmt: 0

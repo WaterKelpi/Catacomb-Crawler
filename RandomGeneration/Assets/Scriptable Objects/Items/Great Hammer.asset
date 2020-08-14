@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fea1872dedeecb458953226ead526ef, type: 3}
+  m_Name: Great Hammer
+  m_EditorClassIdentifier: 
+  itemType: 1
+  itemName: Great Hammer
+  maxStack: 1
+  numInStack: 1
+  itemSprite: {fileID: -2424990196898915219, guid: a5ac7618c75fe1e4baa815cf8bd6391f,
+    type: 3}
+  consumable: 0
+  throwable: 0
+  useable: 0
+  equipable: 1
+  bellyChange: 0
+  healthChange: 0
+  thrownDamage: 0
+  statBoosts: 000000000a000000000000000000000000000000
+  speedBoost: -0.25
+  equipType: 7
+  weaponPrefab: {fileID: 2403875099040059510, guid: 79d120374bc92224399a8c5a44c568d2,
+    type: 3}
+  baseSaleAmt: 0

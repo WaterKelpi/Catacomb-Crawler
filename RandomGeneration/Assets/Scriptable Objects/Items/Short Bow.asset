@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fea1872dedeecb458953226ead526ef, type: 3}
+  m_Name: Short Bow
+  m_EditorClassIdentifier: 
+  itemType: 3
+  itemName: Short Bow
+  maxStack: 1
+  numInStack: 1
+  itemSprite: {fileID: -5191702154931102323, guid: bceef3177b6851a44ac84a6b917c46ea,
+    type: 3}
+  consumable: 0
+  throwable: 0
+  useable: 0
+  equipable: 1
+  buyable: 0
+  bellyChange: 0
+  healthChange: 0
+  thrownDamage: 0
+  statBoosts: 0000000000000000070000000000000000000000
+  speedBoost: 0
+  equipType: 7
+  weaponPrefab: {fileID: 3809568235698948394, guid: 28d545d024ab5fe47bd839dcf5112b89,
+    type: 3}
+  baseBuyAmt: 0
