@@ -25,7 +25,7 @@ public class AdventureMenuHandler : MonoBehaviour {
     RectTransform pauseHUD;
 
 
-    int  curOthersSel,curOthersContextSel,curGroundSel,curGroundContextSel,curRestSel,curRestContextSel;
+    int  curOthersSel,curOthersContextSel,curGroundSel,curRestSel,curRestContextSel;
 
     [SerializeField]
     TextMeshProUGUI curFloor, curLevel, curHP;
@@ -76,10 +76,11 @@ public class AdventureMenuHandler : MonoBehaviour {
 
     [Header("Ground")]
     [SerializeField]//Main Panel
-    RectTransform groundPanel;
+    RectTransform groundPanel,groundContextPanel;
     //[SerializeField]//Sub Panels
     [SerializeField]//Text
-    TextMeshProUGUI groundText;
+    TextMeshProUGUI groundText,groundContextText;
+    int curGroundContextSel;
 
     [Header("Rest")]
     [SerializeField]//Main Panel
@@ -336,6 +337,36 @@ public class AdventureMenuHandler : MonoBehaviour {
                         ChangeMenu();
                         curMenu = menuType.paused;
                     }
+                    if (Input.GetButtonDown("RightButton")) {
+                        if (groundContextText.text.Contains(">Purchase")) {
+                            if (playerInventory.Gold >= playerEntityManager.ObjOntopOf.GetComponent<ItemScript>().Item.baseBuyAmt) {
+                                if (playerInventory.AddItem(playerEntityManager.ObjOntopOf.GetComponent<ItemScript>().Item)) {
+                                    playerInventory.GainGold(playerEntityManager.ObjOntopOf.GetComponent<ItemScript>().Item.baseBuyAmt * -1);
+                                    Destroy(playerEntityManager.ObjOntopOf);
+                                }
+                                else {
+                                    CloseMenu();
+                                    NewLogMessage("You don't have the space for this!");
+                                }
+                            }
+                            else {
+                                CloseMenu();
+                                NewLogMessage("You don't have enough money!");
+                            }
+                            
+                        }
+                    
+                    
+                    }
+
+                    if (Input.GetAxisRaw("Vertical") != 0 && !inputHeld) {
+                        if (playerEntityManager.ObjOntopOf != null) {
+                            inputHeld = true;
+                            curGroundContextSel -= 1 * (int)Mathf.Sign(Input.GetAxisRaw("Vertical"));
+                        }
+                    }
+
+
                     break;
                 case menuType.rest:
                     if (Input.GetButtonDown("BottomButton")) {
@@ -485,7 +516,47 @@ public class AdventureMenuHandler : MonoBehaviour {
                     groundText.text = "";
                     if (playerEntityManager.ObjOntopOf != null) { groundText.text = string.Format("There is a {0} at your feet", playerEntityManager.ObjOntopOf.GetComponent<ItemScript>().Item.itemName); }
                     else { groundText.text = "There is nothing at your feet"; }
-                    break;
+                    if (playerEntityManager.ObjOntopOf != null) { groundContextPanel.gameObject.SetActive(true); } else { groundContextPanel.gameObject.SetActive(false); }
+                    if (playerEntityManager.ObjOntopOf != null) {
+                        groundContextText.text = "";
+                        Item itemOnGround = playerEntityManager.ObjOntopOf.GetComponent<ItemScript>().Item;
+                        if (curGroundContextSel == 0) { groundContextText.text += ">"; }
+                        groundContextText.text += playerEntityManager.ObjOntopOf.GetComponent<ItemScript>().Buyable && !groundContextText.text.Contains("Purchase") ?
+                            "Purchase" : itemOnGround.consumable && !groundContextText.text.Contains("Consume") ?
+                            "Consume" : itemOnGround.throwable && !groundContextText.text.Contains("Throw") ?
+                            "Throw" : itemOnGround.useable && !groundContextText.text.Contains("Use") ?
+                            "Use" : itemOnGround.equipable && !groundContextText.text.Contains("Equip") ?
+                            "Equip" : !groundContextText.text.Contains("Exit") ? "Exit" : "";
+                        groundContextText.text += "\n";
+                        if (curGroundContextSel == 1) { groundContextText.text += ">"; }
+                        groundContextText.text += itemOnGround.consumable && !groundContextText.text.Contains("Consume") ?
+                            "Consume" : itemOnGround.throwable && !groundContextText.text.Contains("Throw") ?
+                            "Throw" : itemOnGround.useable && !groundContextText.text.Contains("Use") ?
+                            "Use" : itemOnGround.equipable && !groundContextText.text.Contains("Equip") ?
+                            "Equip" : !groundContextText.text.Contains("Exit") ? "Exit" : "";
+                        groundContextText.text += "\n";
+                        if (curGroundContextSel == 2) { groundContextText.text += ">"; }
+                        groundContextText.text += itemOnGround.throwable && !groundContextText.text.Contains("Throw") ?
+                            "Throw" : itemOnGround.useable && !groundContextText.text.Contains("Use") ?
+                            "Use" : itemOnGround.equipable && !groundContextText.text.Contains("Equip") ?
+                            "Equip" : !groundContextText.text.Contains("Exit") ? "Exit" : "";
+                        groundContextText.text += "\n";
+                        if (curGroundContextSel == 3) { groundContextText.text += ">"; }
+                        groundContextText.text += itemOnGround.useable && !groundContextText.text.Contains("Use") ?
+                            "Use" : itemOnGround.equipable && !groundContextText.text.Contains("Equip") ?
+                            "Equip" : !groundContextText.text.Contains("Exit") ? "Exit" : "";
+                        groundContextText.text += "\n";
+                        if (curGroundContextSel == 4) { groundContextText.text += ">"; }
+                        groundContextText.text += itemOnGround.equipable && !groundContextText.text.Contains("Equip") ?
+                            "Equip" : !groundContextText.text.Contains("Exit") ? "Exit" : "";
+                        groundContextText.text += "\n";
+                        if (curGroundContextSel == 5) { groundContextText.text += ">"; }
+                        groundContextText.text += !groundContextText.text.Contains("Exit") ? "Exit" : "";
+
+
+
+                    }
+                        break;
                 case menuType.rest:
                     if (restPanel.gameObject.activeInHierarchy == false) { restPanel.gameObject.SetActive(true); }
                     break;

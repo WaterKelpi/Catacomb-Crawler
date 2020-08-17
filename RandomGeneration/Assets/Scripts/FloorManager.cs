@@ -20,7 +20,7 @@ public class FloorManager : MonoBehaviour {
 	void Awake(){
         th = GetComponent<TurnHandling>();
         gh = GetComponent<GridHandler>();
-		curFloor = fg.floorGen(31,31,3,11);
+		curFloor = fg.floorGen(floorInfo);
         spawnedObjects = fg.populateTheFloor(floorInfo);
         th.CollectActors();
 	}
@@ -40,7 +40,7 @@ public class FloorManager : MonoBehaviour {
         foreach (GameObject obj in spawnedObjects) {
             Destroy(obj);
         }
-        curFloor = fg.floorGen(31, 31, 3, 11);
+        curFloor = fg.floorGen(floorInfo);
         spawnedObjects = fg.populateTheFloor(floorInfo);
         th.CollectActors();
         gh.CreateGrid();

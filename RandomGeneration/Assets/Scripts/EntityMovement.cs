@@ -79,7 +79,7 @@ public class EntityMovement : MonoBehaviour
                 if (canMove) {
                     //PC Movement
                     if (playerControlled) {
-                        MoveTargetPos(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
+                        MoveTargetPos(new Vector2(Mathf.Round(Input.GetAxisRaw("Horizontal")), Mathf.Round(Input.GetAxisRaw("Vertical"))));
 
 
                         if (Input.GetButtonDown("RightButton") && !isMoving && canMove) {
@@ -221,7 +221,7 @@ public class EntityMovement : MonoBehaviour
 
     void UpdateAnimationVariables() {
         if (curTurn) {
-            if (playerControlled) { curDir = !isMoving ? GlobalFunc.GetDirection(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), curDir) : curDir; GetComponent<EntityAnimation>().prevDir = curDir; }
+            if (playerControlled) { curDir = !isMoving ? GlobalFunc.GetDirection(Mathf.Round(Input.GetAxisRaw("Horizontal")), Mathf.Round(Input.GetAxisRaw("Vertical")), curDir) : curDir; GetComponent<EntityAnimation>().prevDir = curDir; }
             else { GetComponent<EntityAnimation>().prevDir = GlobalFunc.GetDirection(path.Length != 0 ? path[0] - curPos : GlobalFunc.entityDirectionToVector2(curDir)); }
         }
         GetComponent<EntityAnimation>().isMoving = isMoving;

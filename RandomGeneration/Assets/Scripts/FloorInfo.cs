@@ -10,6 +10,10 @@ public class FloorInfo : ScriptableObject
     public List<Item> itemTable;
     public List<int> enemySpawnWeight, itemSpawnWeight;
 
+    public int floorWidth, floorHeight, roomMin, roomMax;
+
+    public bool noShop, noItemRoom;
+
     public int TotalItemWeight { get {
             int totalWeight = 0;
             if (itemSpawnWeight.Count == 0) {

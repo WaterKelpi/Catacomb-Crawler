@@ -13,7 +13,7 @@ public class Item : ScriptableObject
     public int maxStack;
     public int numInStack;
     public Sprite itemSprite;
-    public bool consumable, throwable, useable, equipable,buyable;
+    public bool consumable, throwable, useable, equipable;
     public int bellyChange, healthChange, thrownDamage;
     public int[] statBoosts = new int[5]; //HP,STR,DEX,INTL,DEF
     public float speedBoost;

@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class TurnHandling : MonoBehaviour {
 
-    public EntityActionParser eActionParser;
-
-	public List<GameObject> actorTurnOrder;
+    public List<GameObject> actorTurnOrder;
 	public int curActor;
     public bool hold;
 	void Awake(){

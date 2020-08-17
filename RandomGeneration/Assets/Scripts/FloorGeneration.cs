@@ -39,36 +39,41 @@ public class FloorGeneration : MonoBehaviour {
 		
 	}
 
-	public tileType[,] floorGen (int floorWidth, int floorHeight, int roomMin, int roomMax) {
-		floorArray = new tileType[floorWidth, floorHeight];
+	public tileType[,] floorGen (FloorInfo floorInfo) {
+		floorArray = new tileType[floorInfo.floorWidth, floorInfo.floorHeight];
 		//Sets entire array to void tiles
-		for (int xx = 0; xx < floorWidth; xx++) {
-			for (int yy = 0; yy < floorHeight; yy++) {
+		for (int xx = 0; xx < floorInfo.floorWidth; xx++) {
+			for (int yy = 0; yy < floorInfo.floorHeight; yy++) {
 				floorArray [xx, yy] = tileType.VOID;
 			}	
 		}
 		//Check the max number of rooms that can be spawned
-		int maxNumRooms = (floorWidth * floorHeight) / (roomMax * roomMax);
+		int maxNumRooms = (floorInfo.floorWidth * floorInfo.floorHeight) / (floorInfo.roomMax * floorInfo.roomMax);
         //Generate Item Room
-        while (true) {
-            if (GenerateRoom(5, 5, tileType.ITEMROOM)) {
-                break;
+        if (!floorInfo.noItemRoom) {
+            while (true) {
+                if (GenerateRoom(5, 5, tileType.ITEMROOM)) {
+                    break;
+                }
             }
         }
         //Generate Shop
-        while (true) {
-            if (GenerateRoom(5, 5, tileType.SHOPROOM)) {
-                break;
+        if (!floorInfo.noShop) {
+            while (true) {
+                if (GenerateRoom(5, 5, tileType.SHOPROOM)) {
+                    break;
+                }
             }
         }
+        
 
 
         //Spawn the rooms
         for (int i = 0; i < Mathf.Clamp(maxNumRooms * Random.Range(.5f, 1.5f) - 2,2, maxNumRooms*Random.Range(.5f,1.5f)-2); i++) {
 
-            int roomHeight = Random.Range(roomMin, roomMax);
+            int roomHeight = Random.Range(floorInfo.roomMin, floorInfo.roomMax);
             roomHeight += roomHeight % 2 == 0 ? 1 : 0;
-            int roomWidth = Random.Range(roomMin, roomMax);
+            int roomWidth = Random.Range(floorInfo.roomMin, floorInfo.roomMax);
             roomWidth += roomWidth % 2 == 0 ? 1 : 0;
             int roomGenAttempts = 0;
             while (true) {
@@ -86,14 +91,14 @@ public class FloorGeneration : MonoBehaviour {
 
 		}
 		//Generates the corridors
-		for (int xx = 1; xx < floorWidth - 1; xx+=2) {
-			for (int yy = 1; yy < floorHeight - 1; yy+=2) {
+		for (int xx = 1; xx < floorInfo.floorWidth - 1; xx+=2) {
+			for (int yy = 1; yy < floorInfo.floorHeight - 1; yy+=2) {
 				GenerateCorridor (new Vector2 (xx, yy));
 			}
 		}
 		//Creates possible connections
-		for (int xx = 1; xx < floorWidth - 1; xx++) {
-			for (int yy = 1; yy < floorHeight - 1; yy++) {
+		for (int xx = 1; xx < floorInfo.floorWidth - 1; xx++) {
+			for (int yy = 1; yy < floorInfo.floorHeight - 1; yy++) {
 				if(floorArray[xx,yy] == tileType.VOID){
                     //Floor Left, Room Right
 					if (floorArray [xx - 1, yy] == tileType.FLOOR && floorArray [xx + 1, yy] == tileType.ROOM || floorArray[xx - 1, yy] == tileType.FLOOR && floorArray[xx + 1, yy] == tileType.ITEMROOM || floorArray[xx - 1, yy] == tileType.FLOOR && floorArray[xx + 1, yy] == tileType.SHOPROOM) {
@@ -124,8 +129,8 @@ public class FloorGeneration : MonoBehaviour {
 		}
 
         //Create connections for rooms
-        for (int xx = 1; xx < floorWidth - 1; xx++) {
-            for (int yy = 1; yy < floorHeight - 1; yy++) {
+        for (int xx = 1; xx < floorInfo.floorWidth - 1; xx++) {
+            for (int yy = 1; yy < floorInfo.floorHeight - 1; yy++) {
                 //Found upper lefthand corner of room
                 if (floorArray[xx, yy] == tileType.ROOM || floorArray[xx, yy] == tileType.ITEMROOM || floorArray[xx, yy] == tileType.SHOPROOM) {
                     int roomWidth = 0;
@@ -152,7 +157,7 @@ public class FloorGeneration : MonoBehaviour {
                         }
                     }
                     List<string> connectionDirs = new List<string>();
-                    for (int i = 0; i < (roomWidth * roomHeight) / (roomMin * roomMin);i++) {
+                    for (int i = 0; i < (roomWidth * roomHeight) / (floorInfo.roomMin * floorInfo.roomMin);i++) {
                         connectionDirs.Clear();
                         if (northConnections.Any()) { connectionDirs.Add("N"); }
                         if (eastConnections.Any()) { connectionDirs.Add("E"); }
@@ -202,8 +207,8 @@ public class FloorGeneration : MonoBehaviour {
 		//Remove the dead ends
 
 		for (int i = 0; i < 50; i++) {
-			for (int xx = 1; xx < floorWidth - 1; xx++) {
-				for (int yy = 1; yy < floorHeight - 1; yy++) {
+			for (int xx = 1; xx < floorInfo.floorWidth - 1; xx++) {
+				for (int yy = 1; yy < floorInfo.floorHeight - 1; yy++) {
 					//If the block is an endcap to a hall way
 					if (floorArray [xx - 1, yy] == tileType.VOID && floorArray [xx + 1, yy] == tileType.VOID && floorArray [xx, yy - 1] == tileType.VOID && floorArray [xx, yy + 1] == tileType.FLOOR) {
 						floorArray [xx, yy] = tileType.VOID;
@@ -237,7 +242,7 @@ public class FloorGeneration : MonoBehaviour {
 				}
 			}
 		}
-		paintTheFloor (floorWidth, floorHeight);
+		paintTheFloor (floorInfo.floorWidth, floorInfo.floorHeight);
 		return floorArray;
 	}
 
@@ -262,7 +267,6 @@ public class FloorGeneration : MonoBehaviour {
                     wallMap.SetTile(new Vector3Int(xx, yy, 0), wall);
                 }
                 if (floorArray[xx, yy] == tileType.SHOPROOM) {//Generate Item Room
-                    Debug.Log("Painting a shop");
                     groundMap.SetTile(new Vector3Int(xx, yy, 0), carpet);
                 }
 			}	
@@ -348,8 +352,73 @@ public class FloorGeneration : MonoBehaviour {
             spawnedObjects.Add(newLoot);
         }
 
+        //Place Shop Items
+        if (!floorInfo.noShop) {
+            List<Vector2> shopTiles = GatherShopTiles();
+            int lootNum = Random.Range(0, floorInfo.TotalItemWeight);
+            int weightTotal = 0;
+            Item itemToSpawn = defaultItem;
+            for (int itemIndex = 0; itemIndex < floorInfo.itemSpawnWeight.Count; itemIndex++) {
+                if (lootNum >= weightTotal && lootNum < (weightTotal + floorInfo.itemSpawnWeight[itemIndex])) { itemToSpawn = floorInfo.itemTable[itemIndex]; break; }
+                weightTotal += floorInfo.itemSpawnWeight[itemIndex];
+            }
+            if (itemToSpawn == defaultItem) { itemToSpawn = floorInfo.itemTable[floorInfo.itemTable.Count - 1]; }
+            GameObject newLoot = Instantiate(itemPrefab, shopTiles[6], Quaternion.identity);
+            newLoot.GetComponent<ItemScript>().setUp(itemToSpawn);
+            newLoot.gameObject.GetComponent<ItemScript>().makeBuyable();
+            lootNum = Random.Range(0, floorInfo.TotalItemWeight);
+            weightTotal = 0;
+            itemToSpawn = defaultItem;
+            for (int itemIndex = 0; itemIndex < floorInfo.itemSpawnWeight.Count; itemIndex++) {
+                if (lootNum >= weightTotal && lootNum < (weightTotal + floorInfo.itemSpawnWeight[itemIndex])) { itemToSpawn = floorInfo.itemTable[itemIndex]; break; }
+                weightTotal += floorInfo.itemSpawnWeight[itemIndex];
+            }
+            if (itemToSpawn == defaultItem) { itemToSpawn = floorInfo.itemTable[floorInfo.itemTable.Count - 1]; }
+            newLoot = Instantiate(itemPrefab, shopTiles[8], Quaternion.identity);
+            newLoot.GetComponent<ItemScript>().setUp(itemToSpawn);
+            newLoot.gameObject.GetComponent<ItemScript>().makeBuyable();
+            lootNum = Random.Range(0, floorInfo.TotalItemWeight);
+            weightTotal = 0;
+            itemToSpawn = defaultItem;
+            for (int itemIndex = 0; itemIndex < floorInfo.itemSpawnWeight.Count; itemIndex++) {
+                if (lootNum >= weightTotal && lootNum < (weightTotal + floorInfo.itemSpawnWeight[itemIndex])) { itemToSpawn = floorInfo.itemTable[itemIndex]; break; }
+                weightTotal += floorInfo.itemSpawnWeight[itemIndex];
+            }
+            if (itemToSpawn == defaultItem) { itemToSpawn = floorInfo.itemTable[floorInfo.itemTable.Count - 1]; }
+            newLoot = Instantiate(itemPrefab, shopTiles[16], Quaternion.identity);
+            newLoot.GetComponent<ItemScript>().setUp(itemToSpawn);
+            newLoot.gameObject.GetComponent<ItemScript>().makeBuyable();
+            lootNum = Random.Range(0, floorInfo.TotalItemWeight);
+            weightTotal = 0;
+            itemToSpawn = defaultItem;
+            for (int itemIndex = 0; itemIndex < floorInfo.itemSpawnWeight.Count; itemIndex++) {
+                if (lootNum >= weightTotal && lootNum < (weightTotal + floorInfo.itemSpawnWeight[itemIndex])) { itemToSpawn = floorInfo.itemTable[itemIndex]; break; }
+                weightTotal += floorInfo.itemSpawnWeight[itemIndex];
+            }
+            if (itemToSpawn == defaultItem) { itemToSpawn = floorInfo.itemTable[floorInfo.itemTable.Count - 1]; }
+            newLoot = Instantiate(itemPrefab, shopTiles[18], Quaternion.identity);
+            newLoot.GetComponent<ItemScript>().setUp(itemToSpawn);
+            newLoot.gameObject.GetComponent<ItemScript>().makeBuyable();
+
+
+        }
+
         return spawnedObjects;
     }
+
+    List<Vector2> GatherShopTiles() {
+        List<Vector2> shopTiles = new List<Vector2>();
+        for (int xx = 0; xx < floorArray.GetLength(0); xx++) {
+            for (int yy = 0; yy < floorArray.GetLength(1); yy++) {
+                if (floorArray[xx, yy] == tileType.SHOPROOM) {
+                    shopTiles.Add(new Vector2(xx, yy));
+                }
+            }
+        }
+
+        return shopTiles;
+    }
+
 
 
 	public void GenerateCorridor (Vector2 startingPos) {

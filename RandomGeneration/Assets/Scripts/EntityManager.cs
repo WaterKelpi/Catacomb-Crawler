@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-[RequireComponent(typeof(EntityStatHandler), typeof(InventoryManager))]
+[RequireComponent(typeof(EntityStatHandler), typeof(InventoryManager), typeof(EntityMovement))]
 
 public class EntityManager : MonoBehaviour {
     AdventureMenuHandler aMH;
@@ -22,6 +23,8 @@ public class EntityManager : MonoBehaviour {
     public InventoryManager Inventory {
         get { return inventory; }
     }
+
+    bool playerControlled;
 
     private GameObject lastHitBy;
 
@@ -45,6 +48,7 @@ public class EntityManager : MonoBehaviour {
         statHandler = GetComponent<EntityStatHandler>();
         inventory = GetComponent<InventoryManager>();
         aMH = GameObject.Find("Game Manager").GetComponent<AdventureMenuHandler>();
+        playerControlled = GetComponent<EntityMovement>();
 
     }
 
@@ -89,7 +93,7 @@ public class EntityManager : MonoBehaviour {
 
     private void OnTriggerStay2D(Collider2D collision) {
         if (collision.GetComponent<ItemScript>() != null && Vector3.Distance(collision.transform.position, transform.position) <= .1f && curEnergy >= 4) {//Pick up an item
-            if (!collision.GetComponent<ItemScript>().Item.buyable) {
+            if (!collision.GetComponent<ItemScript>().Buyable) {
                 if (inventory.AddItem(collision.GetComponent<ItemScript>().Item)) {
                     aMH.NewLogMessage(string.Format("{0} picked up {1}!", statHandler.entityName, collision.GetComponent<ItemScript>().Item.itemName));
                     Destroy(collision.gameObject);
@@ -126,6 +130,10 @@ public class EntityManager : MonoBehaviour {
             }
             weapon.AttackFinished();
         }
+    }
+
+    void OnTriggerExit2D(Collider2D collision) {
+        if (objOntopOf == collision.gameObject) { objOntopOf = null; }
     }
 
     void Die() {
@@ -309,8 +317,11 @@ public class EntityManager : MonoBehaviour {
                     default:
                         break;
                 }
-                curBelly--;
-                curBelly = Mathf.Clamp(curBelly, 0, maxBelly);
+                if (playerControlled) {
+                    curBelly--;
+                    curBelly = Mathf.Clamp(curBelly, 0, maxBelly);
+                }
+                
 
                 return true;
             }
