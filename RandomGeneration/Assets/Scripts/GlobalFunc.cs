@@ -71,4 +71,26 @@ public class GlobalFunc : MonoBehaviour
             default: return Vector2.zero;
         }
     }
+
+    static public int ReturnIndexFromWeightedTable(int valueOfItem, List<int> weightedValues) {
+        int weightTotal = 0;
+        for (int itemIndex = 0; itemIndex < GetTotalListValue(weightedValues); itemIndex++) {
+            if (valueOfItem >= weightTotal && valueOfItem < (weightTotal + weightedValues[itemIndex])) { return itemIndex; }
+            weightTotal += weightedValues[itemIndex];
+        }
+        return 0;
+    }
+
+    static public int GetTotalListValue(List<int> listToTotal) {
+        int totalValue = 0;
+        if (listToTotal.Count == 0) {
+            return totalValue;
+        }
+        else {
+            foreach (int itemValue in listToTotal) {
+                totalValue += itemValue;
+            }
+            return totalValue;
+        }
+    }
 }

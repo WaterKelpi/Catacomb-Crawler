@@ -44,6 +44,7 @@ public class EntityManager : MonoBehaviour {
     GameObject objOntopOf;
     public GameObject ObjOntopOf {get {return objOntopOf;}}
 
+
     private void Awake() {
         statHandler = GetComponent<EntityStatHandler>();
         inventory = GetComponent<InventoryManager>();
@@ -86,8 +87,8 @@ public class EntityManager : MonoBehaviour {
                 case statType.defense:
                     statHandler.TakeDamage(weapon.WeaponDamage, eStatHandler.Def, eStatHandler.Level);
                     break;
-
-            }  
+            }
+            GetComponent<EntityAnimation>().isHurt = true;
         }
     }
 
@@ -129,6 +130,7 @@ public class EntityManager : MonoBehaviour {
                     break;
             }
             weapon.AttackFinished();
+            GetComponent<EntityAnimation>().isHurt = true;
         }
     }
 

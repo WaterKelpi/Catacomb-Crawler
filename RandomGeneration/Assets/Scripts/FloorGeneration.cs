@@ -312,19 +312,7 @@ public class FloorGeneration : MonoBehaviour {
         //Generating Enemies
         for (int i = 0; i < validRoomTiles.Count / 20; i++) {
             int enemyPos = Random.Range(0, validRoomTiles.Count);
-            int enemyNum = Random.Range(0, floorInfo.TotalEnemyWeight);
-            int weightTotal = 0;
-            GameObject enemyToSpawn = null;
-            for (int enemyIndex = 0; enemyIndex < floorInfo.enemySpawnWeight.Count; enemyIndex++) {
-                Debug.Log(enemyNum);
-                Debug.Log(weightTotal+" and "+ (weightTotal + floorInfo.enemySpawnWeight[enemyIndex]));
-                if (enemyNum >= weightTotal && enemyNum < (weightTotal + floorInfo.enemySpawnWeight[enemyIndex])) { enemyToSpawn = floorInfo.enemyTable[enemyIndex]; Debug.Log(enemyToSpawn.name); break;}
-                Debug.Log("Next enemy!");
-                weightTotal += floorInfo.enemySpawnWeight[enemyIndex];
-            }
-
-
-
+            GameObject enemyToSpawn = floorInfo.enemyTable[GlobalFunc.ReturnIndexFromWeightedTable(Random.Range(0, floorInfo.TotalEnemyWeight), floorInfo.enemySpawnWeight)];
             GameObject newEnemy = Instantiate(enemyToSpawn, validRoomTiles[enemyPos], Quaternion.identity);
             newEnemy.GetComponent<EntityMovement>().targetPos = newEnemy.transform.position;
             validRoomTiles.RemoveAt(enemyPos);
@@ -337,14 +325,7 @@ public class FloorGeneration : MonoBehaviour {
             //Choose Loot Position
             int lootPos = Random.Range(0, validRoomTiles.Count);
             //Choose Loot to Spawn
-            int lootNum = Random.Range(0, floorInfo.TotalItemWeight);
-            int weightTotal = 0;
-            Item itemToSpawn = defaultItem;
-            for (int itemIndex = 0; itemIndex < floorInfo.itemSpawnWeight.Count; itemIndex++) {
-                if (lootNum >= weightTotal && lootNum < (weightTotal + floorInfo.itemSpawnWeight[itemIndex])) { itemToSpawn = floorInfo.itemTable[itemIndex]; break; }
-                weightTotal += floorInfo.itemSpawnWeight[itemIndex];
-            }
-            if (itemToSpawn == defaultItem) { itemToSpawn = floorInfo.itemTable[floorInfo.itemTable.Count - 1]; }
+            Item itemToSpawn = floorInfo.itemTable[GlobalFunc.ReturnIndexFromWeightedTable(Random.Range(0, floorInfo.TotalItemWeight), floorInfo.itemSpawnWeight)];
             GameObject newLoot = Instantiate(itemPrefab, validRoomTiles[lootPos], Quaternion.identity);
             newLoot.GetComponent<ItemScript>().setUp(itemToSpawn);
             //newLoot.GetComponent<EnemyMovement>().targetPos = newLoot.transform.position;
@@ -355,47 +336,22 @@ public class FloorGeneration : MonoBehaviour {
         //Place Shop Items
         if (!floorInfo.noShop) {
             List<Vector2> shopTiles = GatherShopTiles();
-            int lootNum = Random.Range(0, floorInfo.TotalItemWeight);
-            int weightTotal = 0;
-            Item itemToSpawn = defaultItem;
-            for (int itemIndex = 0; itemIndex < floorInfo.itemSpawnWeight.Count; itemIndex++) {
-                if (lootNum >= weightTotal && lootNum < (weightTotal + floorInfo.itemSpawnWeight[itemIndex])) { itemToSpawn = floorInfo.itemTable[itemIndex]; break; }
-                weightTotal += floorInfo.itemSpawnWeight[itemIndex];
-            }
-            if (itemToSpawn == defaultItem) { itemToSpawn = floorInfo.itemTable[floorInfo.itemTable.Count - 1]; }
+            Item itemToSpawn = floorInfo.itemTable[GlobalFunc.ReturnIndexFromWeightedTable(Random.Range(0, floorInfo.TotalItemWeight), floorInfo.itemSpawnWeight)];
             GameObject newLoot = Instantiate(itemPrefab, shopTiles[6], Quaternion.identity);
             newLoot.GetComponent<ItemScript>().setUp(itemToSpawn);
             newLoot.gameObject.GetComponent<ItemScript>().makeBuyable();
-            lootNum = Random.Range(0, floorInfo.TotalItemWeight);
-            weightTotal = 0;
-            itemToSpawn = defaultItem;
-            for (int itemIndex = 0; itemIndex < floorInfo.itemSpawnWeight.Count; itemIndex++) {
-                if (lootNum >= weightTotal && lootNum < (weightTotal + floorInfo.itemSpawnWeight[itemIndex])) { itemToSpawn = floorInfo.itemTable[itemIndex]; break; }
-                weightTotal += floorInfo.itemSpawnWeight[itemIndex];
-            }
-            if (itemToSpawn == defaultItem) { itemToSpawn = floorInfo.itemTable[floorInfo.itemTable.Count - 1]; }
+
+            itemToSpawn = floorInfo.itemTable[GlobalFunc.ReturnIndexFromWeightedTable(Random.Range(0, floorInfo.TotalItemWeight), floorInfo.itemSpawnWeight)];
             newLoot = Instantiate(itemPrefab, shopTiles[8], Quaternion.identity);
             newLoot.GetComponent<ItemScript>().setUp(itemToSpawn);
             newLoot.gameObject.GetComponent<ItemScript>().makeBuyable();
-            lootNum = Random.Range(0, floorInfo.TotalItemWeight);
-            weightTotal = 0;
-            itemToSpawn = defaultItem;
-            for (int itemIndex = 0; itemIndex < floorInfo.itemSpawnWeight.Count; itemIndex++) {
-                if (lootNum >= weightTotal && lootNum < (weightTotal + floorInfo.itemSpawnWeight[itemIndex])) { itemToSpawn = floorInfo.itemTable[itemIndex]; break; }
-                weightTotal += floorInfo.itemSpawnWeight[itemIndex];
-            }
-            if (itemToSpawn == defaultItem) { itemToSpawn = floorInfo.itemTable[floorInfo.itemTable.Count - 1]; }
+            
+            itemToSpawn = floorInfo.itemTable[GlobalFunc.ReturnIndexFromWeightedTable(Random.Range(0, floorInfo.TotalItemWeight), floorInfo.itemSpawnWeight)];
             newLoot = Instantiate(itemPrefab, shopTiles[16], Quaternion.identity);
             newLoot.GetComponent<ItemScript>().setUp(itemToSpawn);
             newLoot.gameObject.GetComponent<ItemScript>().makeBuyable();
-            lootNum = Random.Range(0, floorInfo.TotalItemWeight);
-            weightTotal = 0;
-            itemToSpawn = defaultItem;
-            for (int itemIndex = 0; itemIndex < floorInfo.itemSpawnWeight.Count; itemIndex++) {
-                if (lootNum >= weightTotal && lootNum < (weightTotal + floorInfo.itemSpawnWeight[itemIndex])) { itemToSpawn = floorInfo.itemTable[itemIndex]; break; }
-                weightTotal += floorInfo.itemSpawnWeight[itemIndex];
-            }
-            if (itemToSpawn == defaultItem) { itemToSpawn = floorInfo.itemTable[floorInfo.itemTable.Count - 1]; }
+
+            itemToSpawn = floorInfo.itemTable[GlobalFunc.ReturnIndexFromWeightedTable(Random.Range(0, floorInfo.TotalItemWeight), floorInfo.itemSpawnWeight)];
             newLoot = Instantiate(itemPrefab, shopTiles[18], Quaternion.identity);
             newLoot.GetComponent<ItemScript>().setUp(itemToSpawn);
             newLoot.gameObject.GetComponent<ItemScript>().makeBuyable();

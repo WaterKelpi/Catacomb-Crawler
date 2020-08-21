@@ -160,7 +160,7 @@ Animator:
   m_GameObject: {fileID: 1148262563799728}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d127dc42226318a4bbd8f6cc12fa4abd, type: 2}
+  m_Controller: {fileID: 9100000, guid: c7ba72b2f7baa2f44b2feb1041175ba1, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -258,3 +258,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prevDir: 0
   isMoving: 0
+  isHurt: 0
+  isSleeping: 0
+  meleeAttack: 0
+  rangedAttack: 0
+  isAttacking: 0
