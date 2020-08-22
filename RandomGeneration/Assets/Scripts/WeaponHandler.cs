@@ -44,9 +44,9 @@ public class WeaponHandler : MonoBehaviour
             return;
         }
 
-        if (parentObject.GetComponent<EntityMovement>() != null && parentObject.tag == "Player") {
-            parentObject.GetComponent<EntityMovement>().EndTurn();
-        }
+        
+        parentObject.GetComponent<EntityMovement>().EndTurn();
+        
         /*if (parentObject.GetComponent<EnemyMovement>() != null) {
             parentObject.GetComponent<EnemyMovement>().EndTurn();
         }*/

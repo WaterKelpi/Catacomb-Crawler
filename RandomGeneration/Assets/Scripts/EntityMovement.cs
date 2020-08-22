@@ -199,7 +199,6 @@ public class EntityMovement : MonoBehaviour
                                         break;
                                 }
                             }
-                            EndTurn();
                             return;
                         }
                         else if (path.Length != 0) {
@@ -225,6 +224,7 @@ public class EntityMovement : MonoBehaviour
             else { GetComponent<EntityAnimation>().prevDir = GlobalFunc.GetDirection(path.Length != 0 ? path[0] - curPos : GlobalFunc.entityDirectionToVector2(curDir)); }
         }
         GetComponent<EntityAnimation>().isMoving = isMoving;
+        GetComponent<EntityAnimation>().isSleeping = isSleeping;
     }
 
     public void EndTurn() {

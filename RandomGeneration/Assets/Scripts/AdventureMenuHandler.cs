@@ -514,7 +514,8 @@ public class AdventureMenuHandler : MonoBehaviour {
                 case menuType.ground:
                     if (groundPanel.gameObject.activeInHierarchy == false) { groundPanel.gameObject.SetActive(true); }
                     groundText.text = "";
-                    if (playerEntityManager.ObjOntopOf != null) { groundText.text = string.Format("There is a {0} at your feet", playerEntityManager.ObjOntopOf.GetComponent<ItemScript>().Item.itemName); }
+                    if (playerEntityManager.ObjOntopOf != null && !playerEntityManager.ObjOntopOf.GetComponent<ItemScript>().Buyable) { groundText.text = string.Format("There is a {0} at your feet", playerEntityManager.ObjOntopOf.GetComponent<ItemScript>().Item.itemName); }
+                    else if( playerEntityManager.ObjOntopOf != null && playerEntityManager.ObjOntopOf.GetComponent<ItemScript>().Buyable) { groundText.text = string.Format("There is a {0} for sale. It's {1}", playerEntityManager.ObjOntopOf.GetComponent<ItemScript>().Item.itemName, playerEntityManager.ObjOntopOf.GetComponent<ItemScript>().Item.baseBuyAmt); }
                     else { groundText.text = "There is nothing at your feet"; }
                     if (playerEntityManager.ObjOntopOf != null) { groundContextPanel.gameObject.SetActive(true); } else { groundContextPanel.gameObject.SetActive(false); }
                     if (playerEntityManager.ObjOntopOf != null) {
