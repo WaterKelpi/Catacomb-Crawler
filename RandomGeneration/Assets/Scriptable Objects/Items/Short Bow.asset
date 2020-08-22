@@ -22,7 +22,6 @@ MonoBehaviour:
   throwable: 0
   useable: 0
   equipable: 1
-  buyable: 0
   bellyChange: 0
   healthChange: 0
   thrownDamage: 0
@@ -31,4 +30,4 @@ MonoBehaviour:
   equipType: 7
   weaponPrefab: {fileID: 3809568235698948394, guid: 28d545d024ab5fe47bd839dcf5112b89,
     type: 3}
-  baseBuyAmt: 0
+  baseBuyAmt: 80

@@ -30,4 +30,4 @@ MonoBehaviour:
   equipType: 7
   weaponPrefab: {fileID: 3809568235698948394, guid: e431ac15106bc43458bdcba7e4c991a4,
     type: 3}
-  baseSaleAmt: 0
+  baseBuyAmt: 70

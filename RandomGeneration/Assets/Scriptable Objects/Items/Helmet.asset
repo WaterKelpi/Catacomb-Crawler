@@ -28,3 +28,5 @@ MonoBehaviour:
   statBoosts: 0500000005000000050000000500000005000000
   speedBoost: 0
   equipType: 0
+  weaponPrefab: {fileID: 0}
+  baseBuyAmt: 40

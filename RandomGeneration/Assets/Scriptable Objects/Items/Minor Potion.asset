@@ -29,4 +29,4 @@ MonoBehaviour:
   speedBoost: 0
   equipType: 5
   weaponPrefab: {fileID: 0}
-  baseSaleAmt: 0
+  baseBuyAmt: 55

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 
 
@@ -7,37 +8,16 @@ using UnityEngine;
 public class FloorInfo : ScriptableObject
 {
     public List<GameObject> enemyTable;
-    public List<Item> itemTable;
-    public List<int> enemySpawnWeight, itemSpawnWeight;
+    public List<Item> itemTable,shopTable,itemRoomTable;
+    public List<int> enemySpawnWeight, itemSpawnWeight, shopSpawnWeight, itemRoomSpawnWeight;
 
     public int floorWidth, floorHeight, roomMin, roomMax;
 
     public bool noShop, noItemRoom;
 
-    public int TotalItemWeight { get {
-            int totalWeight = 0;
-            if (itemSpawnWeight.Count == 0) {
-                return totalWeight;
-            }
-            else {
-                foreach (int itemWeight in itemSpawnWeight) {
-                    totalWeight += itemWeight;
-                }
-                return totalWeight;
-            }
-        } }
-    public int TotalEnemyWeight {
-        get {
-            int totalWeight = 0;
-            if (enemySpawnWeight.Count == 0) {
-                return totalWeight;
-            }
-            else {
-                foreach (int enemyWeight in enemySpawnWeight) {
-                    totalWeight += enemyWeight;
-                }
-                return totalWeight;
-            }
-        }
-    }
+    public int TotalItemWeight { get { return GlobalFunc.GetTotalListValue(itemSpawnWeight); } }
+    public int TotalEnemyWeight {        get {return GlobalFunc.GetTotalListValue(enemySpawnWeight);}    }
+
+    public int TotalShopWeight { get { return GlobalFunc.GetTotalListValue(shopSpawnWeight); } }
+    
 }

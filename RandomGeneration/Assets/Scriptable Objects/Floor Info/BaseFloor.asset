@@ -25,9 +25,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b63186f23a546ee429fe9711a8d00cd0, type: 2}
   - {fileID: 11400000, guid: c9a05f6e5e5220d44bc1ed8dce83cc23, type: 2}
   - {fileID: 11400000, guid: bbfb4ee85faeb954dbba64ee0f86ba38, type: 2}
-  - {fileID: 11400000, guid: ecf4503ab220ce042bb69b20cfe11824, type: 2}
+  shopTable:
+  - {fileID: 11400000, guid: c9a05f6e5e5220d44bc1ed8dce83cc23, type: 2}
+  - {fileID: 11400000, guid: 51f778ee7126c2248afad9a5e1628cde, type: 2}
+  - {fileID: 11400000, guid: 99fa682d46d35fb4da8de61af97e9d85, type: 2}
+  - {fileID: 11400000, guid: 06304ffa5ea46054db21ef85af4fd379, type: 2}
+  itemRoomTable: []
   enemySpawnWeight: 0a00000001000000
-  itemSpawnWeight: 020000001e000000050000000a00000014000000140000000200000001000000020000000a000000
+  itemSpawnWeight: 020000001e000000050000000a0000001400000014000000020000000100000002000000
+  shopSpawnWeight: 01000000050000000500000003000000
+  itemRoomSpawnWeight: 
   floorWidth: 31
   floorHeight: 31
   roomMin: 3
