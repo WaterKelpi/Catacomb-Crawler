@@ -15,7 +15,7 @@ MonoBehaviour:
   itemType: 3
   itemName: Short Bow
   maxStack: 1
-  numInStack: 1
+  avgStack: 1
   itemSprite: {fileID: -5191702154931102323, guid: bceef3177b6851a44ac84a6b917c46ea,
     type: 3}
   consumable: 0

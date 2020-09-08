@@ -62,7 +62,7 @@ public class EntityManager : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (statHandler.curHP < 0) { Die(); }
+        if (statHandler.curHP <= 0) { Die(); }
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -95,7 +95,7 @@ public class EntityManager : MonoBehaviour {
     private void OnTriggerStay2D(Collider2D collision) {
         if (collision.GetComponent<ItemScript>() != null && Vector3.Distance(collision.transform.position, transform.position) <= .1f && curEnergy >= 4) {//Pick up an item
             if (!collision.GetComponent<ItemScript>().Buyable) {
-                if (inventory.AddItem(collision.GetComponent<ItemScript>().Item)) {
+                if (inventory.AddItem(collision.GetComponent<ItemScript>())) {
                     aMH.NewLogMessage(string.Format("{0} picked up {1}!", statHandler.entityName, collision.GetComponent<ItemScript>().Item.itemName));
                     Destroy(collision.gameObject);
                 }
@@ -146,7 +146,7 @@ public class EntityManager : MonoBehaviour {
 
         foreach (Item item in inventory.Inventory) {
             GameObject newItem = Instantiate(itemPrefab, transform.position, Quaternion.identity);
-            newItem.GetComponent<ItemScript>().setUp(item);
+            newItem.GetComponent<ItemScript>().setUp(item,inventory.InventoryCount[inventory.Inventory.IndexOf(item)]);
         }
 
         //Remove Entity From Queue

@@ -15,7 +15,7 @@ MonoBehaviour:
   itemType: 0
   itemName: Gold
   maxStack: 999999
-  numInStack: 30
+  avgStack: 30
   itemSprite: {fileID: 9103690083697750224, guid: 4b632fd7da4936e48a4425d088a61139,
     type: 3}
   consumable: 0
@@ -25,3 +25,8 @@ MonoBehaviour:
   bellyChange: 0
   healthChange: 0
   thrownDamage: 0
+  statBoosts: 0000000000000000000000000000000000000000
+  speedBoost: 0
+  equipType: 5
+  weaponPrefab: {fileID: 0}
+  baseBuyAmt: 0

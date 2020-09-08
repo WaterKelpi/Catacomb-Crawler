@@ -237,7 +237,7 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   thisEntity: {fileID: 0}
   agroObj: {fileID: 0}
-  moveSpeed: 5
+  moveSpeed: 4
   pathManager: {fileID: 0}
   directions: []
   path: []

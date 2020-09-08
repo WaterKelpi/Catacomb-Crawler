@@ -15,7 +15,7 @@ MonoBehaviour:
   itemType: 1
   itemName: Great Hammer
   maxStack: 1
-  numInStack: 1
+  avgStack: 1
   itemSprite: {fileID: -2424990196898915219, guid: a5ac7618c75fe1e4baa815cf8bd6391f,
     type: 3}
   consumable: 0

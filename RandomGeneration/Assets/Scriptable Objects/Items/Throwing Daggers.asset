@@ -15,7 +15,7 @@ MonoBehaviour:
   itemType: 3
   itemName: Throwing Dagger
   maxStack: 30
-  numInStack: 5
+  avgStack: 5
   itemSprite: {fileID: -6794700569185565446, guid: bceef3177b6851a44ac84a6b917c46ea,
     type: 3}
   consumable: 0

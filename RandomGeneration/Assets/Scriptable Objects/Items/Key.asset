@@ -15,12 +15,12 @@ MonoBehaviour:
   itemType: 2
   itemName: Key
   maxStack: 1
-  numInStack: 1
+  avgStack: 1
   itemSprite: {fileID: 3360683437980727940, guid: bceef3177b6851a44ac84a6b917c46ea,
     type: 3}
   consumable: 0
   throwable: 0
-  useable: 0
+  useable: 1
   equipable: 0
   bellyChange: 5
   healthChange: 10
@@ -29,4 +29,4 @@ MonoBehaviour:
   speedBoost: 0
   equipType: 5
   weaponPrefab: {fileID: 0}
-  baseSaleAmt: 0
+  baseBuyAmt: 0

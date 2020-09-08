@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +8,8 @@ public class FloorManager : MonoBehaviour {
 	public tileType[,] curFloor;
 	public int floorW,floorH,minRoomSize,maxRoomSize;
 	public List<GameObject> enemies,loot,spawnedObjects;
-    public FloorInfo floorInfo;
+    public FloorInfo[] dungeonFloors;
+    public FloorInfo curFloorInfo { get { return dungeonFloors[dungeonFloors.Length% floorNum]; } }
     GridHandler gh;
 
     private int floorNum = 1;
@@ -20,8 +22,8 @@ public class FloorManager : MonoBehaviour {
 	void Awake(){
         th = GetComponent<TurnHandling>();
         gh = GetComponent<GridHandler>();
-		curFloor = fg.floorGen(floorInfo);
-        spawnedObjects = fg.populateTheFloor(floorInfo);
+		curFloor = fg.floorGen(dungeonFloors[(floorNum%dungeonFloors.Length)]);
+        spawnedObjects = fg.populateTheFloor(dungeonFloors[(floorNum % dungeonFloors.Length)]);
         th.CollectActors();
 	}
 
@@ -40,13 +42,13 @@ public class FloorManager : MonoBehaviour {
         foreach (GameObject obj in spawnedObjects) {
             Destroy(obj);
         }
-        curFloor = fg.floorGen(floorInfo);
-        spawnedObjects = fg.populateTheFloor(floorInfo);
+        curFloor = fg.floorGen(dungeonFloors[(floorNum % dungeonFloors.Length)]);
+        spawnedObjects = fg.populateTheFloor(dungeonFloors[(floorNum % dungeonFloors.Length)]);
         th.CollectActors();
         gh.CreateGrid();
         foreach (GameObject actor in th.actorTurnOrder) {
             if (actor.tag == "Enemy") {
-                actor.GetComponent<EntityStatHandler>().GainLevel(Mathf.CeilToInt(floorNum * Random.Range(.4f, 1f)));
+                actor.GetComponent<EntityStatHandler>().GainLevel(Mathf.CeilToInt(floorNum * UnityEngine.Random.Range(.4f, 1f)));
             }
         }
     }

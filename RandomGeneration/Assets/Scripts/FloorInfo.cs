@@ -8,12 +8,12 @@ using UnityEngine;
 public class FloorInfo : ScriptableObject
 {
     public List<GameObject> enemyTable;
-    public List<Item> itemTable,shopTable,itemRoomTable;
-    public List<int> enemySpawnWeight, itemSpawnWeight, shopSpawnWeight, itemRoomSpawnWeight;
+    public List<Item> itemTable,shopTable,treasureTable,chestTable;
+    public List<int> enemySpawnWeight, itemSpawnWeight, shopSpawnWeight, treasureSpawnWeight,chestSpawnWeight;
 
     public int floorWidth, floorHeight, roomMin, roomMax;
 
-    public bool noShop, noItemRoom;
+    public bool noShop, noTreasureRoom;
 
     public int TotalItemWeight { get { return GlobalFunc.GetTotalListValue(itemSpawnWeight); } }
     public int TotalEnemyWeight {        get {return GlobalFunc.GetTotalListValue(enemySpawnWeight);}    }

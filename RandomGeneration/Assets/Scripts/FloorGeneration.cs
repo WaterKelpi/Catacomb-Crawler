@@ -50,7 +50,7 @@ public class FloorGeneration : MonoBehaviour {
 		//Check the max number of rooms that can be spawned
 		int maxNumRooms = (floorInfo.floorWidth * floorInfo.floorHeight) / (floorInfo.roomMax * floorInfo.roomMax);
         //Generate Item Room
-        if (!floorInfo.noItemRoom) {
+        if (!floorInfo.noTreasureRoom) {
             while (true) {
                 if (GenerateRoom(5, 5, tileType.ITEMROOM)) {
                     break;
@@ -340,23 +340,31 @@ public class FloorGeneration : MonoBehaviour {
             GameObject newLoot = Instantiate(itemPrefab, shopTiles[6], Quaternion.identity);
             newLoot.GetComponent<ItemScript>().setUp(itemToSpawn);
             newLoot.gameObject.GetComponent<ItemScript>().makeBuyable();
-
+            spawnedObjects.Add(newLoot);
             itemToSpawn = floorInfo.shopTable[GlobalFunc.ReturnIndexFromWeightedTable(Random.Range(0, floorInfo.TotalShopWeight), floorInfo.shopSpawnWeight)];
             newLoot = Instantiate(itemPrefab, shopTiles[8], Quaternion.identity);
             newLoot.GetComponent<ItemScript>().setUp(itemToSpawn);
             newLoot.gameObject.GetComponent<ItemScript>().makeBuyable();
-            
+            spawnedObjects.Add(newLoot);
             itemToSpawn = floorInfo.shopTable[GlobalFunc.ReturnIndexFromWeightedTable(Random.Range(0, floorInfo.TotalShopWeight), floorInfo.shopSpawnWeight)];
             newLoot = Instantiate(itemPrefab, shopTiles[16], Quaternion.identity);
             newLoot.GetComponent<ItemScript>().setUp(itemToSpawn);
             newLoot.gameObject.GetComponent<ItemScript>().makeBuyable();
-
+            spawnedObjects.Add(newLoot);
             itemToSpawn = floorInfo.shopTable[GlobalFunc.ReturnIndexFromWeightedTable(Random.Range(0, floorInfo.TotalShopWeight), floorInfo.shopSpawnWeight)];
             newLoot = Instantiate(itemPrefab, shopTiles[18], Quaternion.identity);
             newLoot.GetComponent<ItemScript>().setUp(itemToSpawn);
             newLoot.gameObject.GetComponent<ItemScript>().makeBuyable();
+            spawnedObjects.Add(newLoot);
+        }
 
-
+        //Place Item Room Items
+        if (!floorInfo.noTreasureRoom) {
+            List<Vector2> itemTiles = GatherItemRoomTiles();
+            Item itemToSpawn = floorInfo.treasureTable[GlobalFunc.ReturnIndexFromWeightedTable(Random.Range(0, floorInfo.TotalItemWeight), floorInfo.treasureSpawnWeight)];
+            GameObject newLoot = Instantiate(itemPrefab, itemTiles[12], Quaternion.identity);
+            newLoot.GetComponent<ItemScript>().setUp(itemToSpawn);
+            spawnedObjects.Add(newLoot);
         }
 
         return spawnedObjects;
@@ -371,13 +379,25 @@ public class FloorGeneration : MonoBehaviour {
                 }
             }
         }
-
         return shopTiles;
+    }
+
+    List<Vector2> GatherItemRoomTiles()
+    {
+        List<Vector2> itemTiles = new List<Vector2>();
+        for (int xx = 0; xx < floorArray.GetLength(0); xx++) {
+            for (int yy = 0; yy < floorArray.GetLength(1); yy++) {
+                if (floorArray[xx, yy] == tileType.ITEMROOM) {
+                    itemTiles.Add(new Vector2(xx, yy));
+                }
+            }
+        }
+        return itemTiles;
     }
 
 
 
-	public void GenerateCorridor (Vector2 startingPos) {
+    public void GenerateCorridor (Vector2 startingPos) {
 		if(floorArray[(int)startingPos.x,(int)startingPos.y] != tileType.VOID){
 			return;
 		}

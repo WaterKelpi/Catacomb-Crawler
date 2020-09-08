@@ -55,7 +55,8 @@ public class AdventureMenuHandler : MonoBehaviour {
     RectTransform invContextPanel;
     [SerializeField]//Text
     TextMeshProUGUI inventoryText, invContextText, invPageText;
-    int curInvSelection, curInvContextSel, curInvPage;
+    int curInvSelection, curInvContextSel, curInvPage,invSlotBeingUsed;
+    bool usingItem;
 
     [Header("Stats")]
     [SerializeField]//Main Panel
@@ -254,9 +255,11 @@ public class AdventureMenuHandler : MonoBehaviour {
                         curInvSelection = 0 + (curInvPage * 10);
                     }
                     if (Input.GetButtonDown("BottomButton")) {
-                        if (!invContext) {
+                        if (!invContext && !usingItem) {
                             curMenu = menuType.paused;
                             ChangeMenu();
+                        }else if (!invContext && usingItem) {
+                            usingItem = false;
                         }
                         else {
                             invContext = false;
@@ -270,12 +273,29 @@ public class AdventureMenuHandler : MonoBehaviour {
                             break;
                         }
                         if (!invContext) {
-                            invContext = true;
-                            curInvContextSel = 0;
+                            if (!usingItem) {
+                                invContext = true;
+                                curInvContextSel = 0;
+                            } else {
+                                if (curInvSelection != invSlotBeingUsed) {
+                                    if (inventoryText.text.Contains(">Chest")) {
+                                        if (invSlotBeingUsed > curInvSelection) {
+                                            playerInventory.RemoveItem(invSlotBeingUsed, 1);
+                                            playerInventory.RemoveItem(curInvSelection, 1);
+                                        }else {
+                                            playerInventory.RemoveItem(curInvSelection, 1);
+                                            playerInventory.RemoveItem(invSlotBeingUsed, 1);
+                                        }
+                                        playerInventory.AddItem(floorManager.curFloorInfo.chestTable[GlobalFunc.ReturnIndexFromWeightedTable(Random.Range(0, GlobalFunc.GetTotalListValue(floorManager.curFloorInfo.chestSpawnWeight)), floorManager.curFloorInfo.treasureSpawnWeight)]);
+                                        NewLogMessage(playerStats.entityName + " opened a chest!");
+                                    }
+                                }
+                            }
+                            
                         }
                         else { //Inside Context Menu
                             string itemName = playerInventory.Inventory[curInvSelection].itemName;
-                            if (invContextText.text.Contains(">Consume")){//Try to Eat
+                            if (invContextText.text.Contains(">Consume")) {//Try to Eat
                                 if (playerEntityManager.ConsumeItem(curInvSelection)) {
                                     NewLogMessage(playerStats.entityName + " consumed " + itemName);
                                     invContext = false;
@@ -296,15 +316,21 @@ public class AdventureMenuHandler : MonoBehaviour {
                             }
                             if (invContextText.text.Contains(">Throw")) {
                                 EntityMovement pm = GameObject.Find("objPlayer").GetComponent<EntityMovement>();
-                                if (playerEntityManager.ThrowItem(curInvSelection,pm.CurDirection)) {
+                                if (playerEntityManager.ThrowItem(curInvSelection, pm.CurDirection)) {
                                     pm.canMove = false;
                                     invContext = false;
                                     CloseMenu();
                                 }
                             }
+                            if (invContextText.text.Contains(">Use")) {
+                                usingItem = true;
+                                invSlotBeingUsed = curInvSelection;
+                                invContext = false;
+                            }
                             if (invContextText.text.Contains(">Exit")) {
                                 invContext = false;
                             }
+                            
                         }
 
                     }
@@ -438,6 +464,7 @@ public class AdventureMenuHandler : MonoBehaviour {
                         inventoryText.text = "";
                         for (int i = 0 + (curInvPage * 10); i < (playerInventory.Inventory.Count < 10+(curInvPage * 10) ? playerInventory.Inventory.Count : 10 + (curInvPage * 10)); i++) {
                             if (i == curInvSelection) { inventoryText.text += ">"; }
+                            if (usingItem && i == invSlotBeingUsed) { inventoryText.text += "-"; }
                             inventoryText.text += playerInventory.Inventory[i].itemName + "\t" + (playerInventory.InventoryCount[i] != 1 ? playerInventory.InventoryCount[i].ToString() : "");
                             if (i < 9 + (curInvPage * 10)) { inventoryText.text += "\n"; }
                         }

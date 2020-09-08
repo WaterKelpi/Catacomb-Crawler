@@ -11,7 +11,7 @@ public class Item : ScriptableObject
     public itemType itemType;
     public string itemName;
     public int maxStack;
-    public int numInStack;
+    public int avgStack;
     public Sprite itemSprite;
     public bool consumable, throwable, useable, equipable;
     public int bellyChange, healthChange, thrownDamage;

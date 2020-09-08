@@ -36,7 +36,9 @@ public class WeaponHandler : MonoBehaviour
     // Update is called once per frame
     void Update(){
         if (Vector2.Distance(this.gameObject.transform.position, parentObject.transform.position) > 20) { AttackFinished(); }
+        if (GetComponent<Collider2D>().IsTouchingLayers(LayerMask.GetMask("Wall")) && isThrown) { AttackFinished(); }
     }
+
 
     public void AttackFinished() {
         if (parentObject == null) {
@@ -53,4 +55,5 @@ public class WeaponHandler : MonoBehaviour
         Destroy(this.gameObject);
 
     }
+
 }

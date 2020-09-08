@@ -176,32 +176,41 @@ public class EntityMovement : MonoBehaviour
                         if (path.Length == 1) {
                             if (!isMoving && canMove) {
                                 canMove = false;
+
                                 Debug.Log("ATTACK!");
-                                GameObject newAttack;
-                                switch (GlobalFunc.GetDirection(path[0] - curPos)) {
-                                    case entityDirection.N:
-                                        newAttack = Instantiate(unarmedAttack, ((Vector2)transform.position + Vector2.up), Quaternion.identity);
-                                        newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
-                                        break;
-                                    case entityDirection.E:
-                                        newAttack = Instantiate(unarmedAttack, ((Vector2)transform.position + Vector2.right), Quaternion.identity);
-                                        newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
-                                        break;
-                                    case entityDirection.S:
-                                        newAttack = Instantiate(unarmedAttack, ((Vector2)transform.position + Vector2.down), Quaternion.identity);
-                                        newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
-                                        break;
-                                    case entityDirection.W:
-                                        newAttack = Instantiate(unarmedAttack, ((Vector2)transform.position + Vector2.left), Quaternion.identity);
-                                        newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
-                                        break;
-                                    default:
-                                        break;
+                                if (!unarmedAttack.GetComponent<WeaponHandler>().IsThrown) {
+                                    GameObject newAttack;
+                                    curDir = GlobalFunc.GetDirection(path[0] - curPos);
+                                    switch (GlobalFunc.GetDirection(path[0] - curPos)) {
+                                        case entityDirection.N:
+                                            newAttack = Instantiate(unarmedAttack, ((Vector2)transform.position + unarmedAttack.GetComponent<WeaponHandler>().WeaponOffsetVert), Quaternion.identity);
+                                            newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
+                                            break;
+                                        case entityDirection.E:
+                                            newAttack = Instantiate(unarmedAttack, ((Vector2)transform.position + unarmedAttack.GetComponent<WeaponHandler>().WeaponOffsetHorz), Quaternion.identity);
+                                            newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
+                                            break;
+                                        case entityDirection.S:
+                                            newAttack = Instantiate(unarmedAttack, ((Vector2)transform.position - unarmedAttack.GetComponent<WeaponHandler>().WeaponOffsetVert), Quaternion.identity);
+                                            newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
+                                            break;
+                                        case entityDirection.W:
+                                            newAttack = Instantiate(unarmedAttack, ((Vector2)transform.position - unarmedAttack.GetComponent<WeaponHandler>().WeaponOffsetHorz), Quaternion.identity);
+                                            newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
+                                            break;
+                                        default:
+                                            break;
+                                    }
                                 }
+                                else {
+                                    eManager.ThrowItem(unarmedAttack,curDir);
+                                }
+                                
                             }
                             return;
                         }
                         else if (path.Length != 0) {
+                            curDir = GlobalFunc.GetDirection(path[0] - curPos);
                             MoveTargetPos(path[0] - curPos);
                         }
                         else {
@@ -221,7 +230,7 @@ public class EntityMovement : MonoBehaviour
     void UpdateAnimationVariables() {
         if (curTurn) {
             if (playerControlled) { curDir = !isMoving ? GlobalFunc.GetDirection(Mathf.Round(Input.GetAxisRaw("Horizontal")), Mathf.Round(Input.GetAxisRaw("Vertical")), curDir) : curDir; GetComponent<EntityAnimation>().prevDir = curDir; }
-            else { GetComponent<EntityAnimation>().prevDir = GlobalFunc.GetDirection(path.Length != 0 ? path[0] - curPos : GlobalFunc.entityDirectionToVector2(curDir)); }
+            else { GetComponent<EntityAnimation>().prevDir = curDir; }
         }
         GetComponent<EntityAnimation>().isMoving = isMoving;
         GetComponent<EntityAnimation>().isSleeping = isSleeping;
@@ -336,6 +345,7 @@ public class EntityMovement : MonoBehaviour
             PathRequestManager.RequestPath(transform.position, agroObj.position, OnPathFound);
         }
         if (path.Length != 0) {
+            curDir = GlobalFunc.GetDirection(path[0] - curPos);
             MoveTargetPos(path[0] - curPos);
         }
         else {

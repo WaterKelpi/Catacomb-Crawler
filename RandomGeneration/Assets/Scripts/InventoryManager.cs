@@ -40,7 +40,7 @@ public class InventoryManager : MonoBehaviour
 
     public bool AddItem(Item item) { //Returns true if item was added
         if (item.itemType == itemType.gold) {
-            gold += item.numInStack;
+            gold += item.avgStack;
             return true;
         }
         if (inventory.Count < inventorySize) {
@@ -52,7 +52,7 @@ public class InventoryManager : MonoBehaviour
             }else {
                 for (int i = 0; i < inventory.Count; i++) {
                     if (inventory[i] == item && inventoryCount[i] < item.maxStack) { //Found the item, and can hold more in that slot
-                        inventoryCount[i]+=item.numInStack;
+                        inventoryCount[i]+=item.avgStack;
                         if (inventoryCount[i] > item.maxStack) {//item overflows the stack
                             Debug.Log("I'm holding too many for the stack");
                             inventory.Add(item);
@@ -64,7 +64,7 @@ public class InventoryManager : MonoBehaviour
                     }
                 }
                 inventory.Add(item);
-                inventoryCount.Add(item.numInStack);
+                inventoryCount.Add(item.avgStack);
                 inventoryEquip.Add(false);
                 if (inventoryCount[inventoryCount.Count-1] > item.maxStack) {//item overflows the stack
                     int curIndex = inventoryCount.Count-1;
@@ -74,6 +74,51 @@ public class InventoryManager : MonoBehaviour
                     inventoryEquip.Add(false);
                     Debug.Log("Adding" + (inventoryCount[curIndex] % item.maxStack) + "to the new stack");
                     inventoryCount[curIndex] = item.maxStack;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool AddItem(ItemScript itemScript)
+    { //Returns true if item was added
+        if (itemScript.Item.itemType == itemType.gold) {
+            gold += itemScript.NumInStack;
+            return true;
+        }
+        if (inventory.Count < inventorySize) {
+            if (itemScript.Item.maxStack == 1) {
+                inventory.Add(itemScript.Item);
+                inventoryCount.Add(1);
+                inventoryEquip.Add(false);
+                return true;
+            }
+            else {
+                for (int i = 0; i < inventory.Count; i++) {
+                    if (inventory[i] == itemScript && inventoryCount[i] < itemScript.Item.maxStack) { //Found the item, and can hold more in that slot
+                        inventoryCount[i] += itemScript.NumInStack;
+                        if (inventoryCount[i] > itemScript.Item.maxStack) {//item overflows the stack
+                            Debug.Log("I'm holding too many for the stack");
+                            inventory.Add(itemScript.Item);
+                            inventoryCount.Add(inventoryCount[i] % itemScript.Item.maxStack);
+                            Debug.Log("Adding" + (inventoryCount[i] % itemScript.Item.maxStack) + "to the new stack");
+                            inventoryCount[i] = itemScript.Item.maxStack;
+                        }
+                        return true;
+                    }
+                }
+                inventory.Add(itemScript.Item);
+                inventoryCount.Add(itemScript.NumInStack);
+                inventoryEquip.Add(false);
+                if (inventoryCount[inventoryCount.Count - 1] > itemScript.Item.maxStack) {//item overflows the stack
+                    int curIndex = inventoryCount.Count - 1;
+                    Debug.Log(curIndex);
+                    inventory.Add(itemScript.Item);
+                    inventoryCount.Add(inventoryCount[curIndex] % itemScript.Item.maxStack);
+                    inventoryEquip.Add(false);
+                    Debug.Log("Adding" + (inventoryCount[curIndex] % itemScript.Item.maxStack) + "to the new stack");
+                    inventoryCount[curIndex] = itemScript.Item.maxStack;
                 }
                 return true;
             }
