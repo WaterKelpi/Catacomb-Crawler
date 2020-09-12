@@ -41,207 +41,223 @@ public class FloorGeneration : MonoBehaviour {
 
 	public tileType[,] floorGen (FloorInfo floorInfo) {
 		floorArray = new tileType[floorInfo.floorWidth, floorInfo.floorHeight];
-		//Sets entire array to void tiles
-		for (int xx = 0; xx < floorInfo.floorWidth; xx++) {
-			for (int yy = 0; yy < floorInfo.floorHeight; yy++) {
-				floorArray [xx, yy] = tileType.VOID;
-			}	
-		}
-		//Check the max number of rooms that can be spawned
-		int maxNumRooms = (floorInfo.floorWidth * floorInfo.floorHeight) / (floorInfo.roomMax * floorInfo.roomMax);
-        //Generate Item Room
-        if (!floorInfo.noTreasureRoom) {
-            while (true) {
-                if (GenerateRoom(5, 5, tileType.ITEMROOM)) {
-                    break;
+        if (!floorInfo.oneRoom) {
+            //Sets entire array to void tiles
+            for (int xx = 0; xx < floorInfo.floorWidth; xx++) {
+                for (int yy = 0; yy < floorInfo.floorHeight; yy++) {
+                    floorArray[xx, yy] = tileType.VOID;
                 }
             }
-        }
-        //Generate Shop
-        if (!floorInfo.noShop) {
-            while (true) {
-                if (GenerateRoom(5, 5, tileType.SHOPROOM)) {
-                    break;
-                }
-            }
-        }
-        
-
-
-        //Spawn the rooms
-        for (int i = 0; i < Mathf.Clamp(maxNumRooms * Random.Range(.5f, 1.5f) - 2,2, maxNumRooms*Random.Range(.5f,1.5f)-2); i++) {
-
-            int roomHeight = Random.Range(floorInfo.roomMin, floorInfo.roomMax);
-            roomHeight += roomHeight % 2 == 0 ? 1 : 0;
-            int roomWidth = Random.Range(floorInfo.roomMin, floorInfo.roomMax);
-            roomWidth += roomWidth % 2 == 0 ? 1 : 0;
-            int roomGenAttempts = 0;
-            while (true) {
-                roomGenAttempts++;
-                if (GenerateRoom(roomWidth, roomHeight, tileType.ROOM)) {
-                    break;
-                }
-                if (roomGenAttempts > 100) {
-                    if (i < 2) {
-                        Debug.Log("Cannot generate enough rooms. Either floor is too small, or rooms are too big.");
+            //Check the max number of rooms that can be spawned
+            int maxNumRooms = (floorInfo.floorWidth * floorInfo.floorHeight) / (floorInfo.roomMax * floorInfo.roomMax);
+            //Generate Item Room
+            if (!floorInfo.noTreasureRoom) {
+                while (true) {
+                    if (GenerateRoom(5, 5, tileType.ITEMROOM)) {
+                        break;
                     }
-                    break;
+                }
+            }
+            //Generate Shop
+            if (!floorInfo.noShop) {
+                while (true) {
+                    if (GenerateRoom(5, 5, tileType.SHOPROOM)) {
+                        break;
+                    }
                 }
             }
 
-		}
-		//Generates the corridors
-		for (int xx = 1; xx < floorInfo.floorWidth - 1; xx+=2) {
-			for (int yy = 1; yy < floorInfo.floorHeight - 1; yy+=2) {
-				GenerateCorridor (new Vector2 (xx, yy));
-			}
-		}
-		//Creates possible connections
-		for (int xx = 1; xx < floorInfo.floorWidth - 1; xx++) {
-			for (int yy = 1; yy < floorInfo.floorHeight - 1; yy++) {
-				if(floorArray[xx,yy] == tileType.VOID){
-                    //Floor Left, Room Right
-					if (floorArray [xx - 1, yy] == tileType.FLOOR && floorArray [xx + 1, yy] == tileType.ROOM || floorArray[xx - 1, yy] == tileType.FLOOR && floorArray[xx + 1, yy] == tileType.ITEMROOM || floorArray[xx - 1, yy] == tileType.FLOOR && floorArray[xx + 1, yy] == tileType.SHOPROOM) {
-						floorArray [xx, yy] = tileType.CONNECTION;
-					}
-                    //Floor Right, Room Left
-					if (floorArray [xx - 1, yy] == tileType.ROOM && floorArray [xx + 1, yy] == tileType.FLOOR || floorArray[xx - 1, yy] == tileType.ITEMROOM && floorArray[xx + 1, yy] == tileType.FLOOR || floorArray[xx - 1, yy] == tileType.SHOPROOM && floorArray[xx + 1, yy] == tileType.FLOOR) {
-						floorArray [xx, yy] = tileType.CONNECTION;
-					}
-                    //Room Left, Room Right
-					if (floorArray [xx - 1, yy] == tileType.ROOM && floorArray [xx + 1, yy] == tileType.ROOM) {
-						floorArray [xx, yy] = tileType.CONNECTION;
-					}
-                    //Floor Down, Room Up
-					if (floorArray [xx, yy - 1] == tileType.FLOOR && floorArray [xx, yy + 1] == tileType.ROOM|| floorArray[xx, yy - 1] == tileType.FLOOR && floorArray[xx, yy + 1] == tileType.ITEMROOM || floorArray[xx, yy - 1] == tileType.FLOOR && floorArray[xx, yy + 1] == tileType.SHOPROOM) {
-						floorArray [xx, yy] = tileType.CONNECTION;
-					}
-                    //Floor Up, Room Down
-					if (floorArray [xx, yy - 1] == tileType.ROOM && floorArray [xx, yy + 1] == tileType.FLOOR || floorArray[xx, yy - 1] == tileType.ITEMROOM && floorArray[xx, yy + 1] == tileType.FLOOR || floorArray[xx, yy - 1] == tileType.SHOPROOM && floorArray[xx, yy + 1] == tileType.FLOOR) {
-						floorArray [xx, yy] = tileType.CONNECTION;
-					}
-                    //Room Up, Room Down
-					if (floorArray [xx, yy - 1] == tileType.ROOM && floorArray [xx, yy + 1] == tileType.ROOM || floorArray[xx, yy - 1] == tileType.ROOM && floorArray[xx, yy + 1] == tileType.ITEMROOM|| floorArray[xx, yy - 1] == tileType.ROOM && floorArray[xx, yy + 1] == tileType.SHOPROOM) {
-						floorArray [xx, yy] = tileType.CONNECTION;
-					}
-				}
-			}
-		}
 
-        //Create connections for rooms
-        for (int xx = 1; xx < floorInfo.floorWidth - 1; xx++) {
-            for (int yy = 1; yy < floorInfo.floorHeight - 1; yy++) {
-                //Found upper lefthand corner of room
-                if (floorArray[xx, yy] == tileType.ROOM || floorArray[xx, yy] == tileType.ITEMROOM || floorArray[xx, yy] == tileType.SHOPROOM) {
-                    int roomWidth = 0;
-                    int roomHeight=0;
-                    while (floorArray[xx + roomWidth, yy] == tileType.ROOM || floorArray[xx + roomWidth, yy] == tileType.ITEMROOM || floorArray[xx + roomWidth, yy] == tileType.SHOPROOM) {
-                        roomWidth++;
-                    }
-                    while (floorArray[xx, yy+roomHeight] == tileType.ROOM || floorArray[xx, yy + roomHeight] == tileType.ITEMROOM || floorArray[xx, yy + roomHeight] == tileType.SHOPROOM) {
-                        roomHeight++;
-                    }
-                    List<Vector2Int> northConnections = new List<Vector2Int>();
-                    List<Vector2Int> southConnections = new List<Vector2Int>();
-                    List<Vector2Int> eastConnections = new List<Vector2Int>();
-                    List<Vector2Int> westConnections = new List<Vector2Int>();
-                    for (int roomX = -1; roomX < roomWidth+1; roomX++) {
-                        for (int roomY = -1; roomY < roomHeight+1; roomY++) {
-                            if (floorArray[xx + roomX, yy + roomY] == tileType.CONNECTION) {
-                                if (roomX == -1) {eastConnections.Add(new Vector2Int(xx + roomX, yy + roomY));}
-                                if (roomX == roomWidth) { westConnections.Add(new Vector2Int(xx + roomX, yy + roomY)); }
 
-                                if (roomY == -1) {northConnections.Add(new Vector2Int(xx + roomX, yy + roomY));}
-                                if (roomY == roomHeight) {southConnections.Add(new Vector2Int(xx + roomX, yy + roomY));}
+            //Spawn the rooms
+            for (int i = 0; i < Mathf.Clamp(maxNumRooms * Random.Range(.5f, 1.5f) - 2, 2, maxNumRooms * Random.Range(.5f, 1.5f) - 2); i++) {
+
+                int roomHeight = Random.Range(floorInfo.roomMin, floorInfo.roomMax);
+                roomHeight += roomHeight % 2 == 0 ? 1 : 0;
+                int roomWidth = Random.Range(floorInfo.roomMin, floorInfo.roomMax);
+                roomWidth += roomWidth % 2 == 0 ? 1 : 0;
+                int roomGenAttempts = 0;
+                while (true) {
+                    roomGenAttempts++;
+                    if (GenerateRoom(roomWidth, roomHeight, tileType.ROOM)) {
+                        break;
+                    }
+                    if (roomGenAttempts > 100) {
+                        if (i < 2) {
+                            Debug.Log("Cannot generate enough rooms. Either floor is too small, or rooms are too big.");
+                        }
+                        break;
+                    }
+                }
+
+            }
+            //Generates the corridors
+            for (int xx = 1; xx < floorInfo.floorWidth - 1; xx += 2) {
+                for (int yy = 1; yy < floorInfo.floorHeight - 1; yy += 2) {
+                    GenerateCorridor(new Vector2(xx, yy));
+                }
+            }
+            //Creates possible connections
+            for (int xx = 1; xx < floorInfo.floorWidth - 1; xx++) {
+                for (int yy = 1; yy < floorInfo.floorHeight - 1; yy++) {
+                    if (floorArray[xx, yy] == tileType.VOID) {
+                        //Floor Left, Room Right
+                        if (floorArray[xx - 1, yy] == tileType.FLOOR && floorArray[xx + 1, yy] == tileType.ROOM || floorArray[xx - 1, yy] == tileType.FLOOR && floorArray[xx + 1, yy] == tileType.ITEMROOM || floorArray[xx - 1, yy] == tileType.FLOOR && floorArray[xx + 1, yy] == tileType.SHOPROOM) {
+                            floorArray[xx, yy] = tileType.CONNECTION;
+                        }
+                        //Floor Right, Room Left
+                        if (floorArray[xx - 1, yy] == tileType.ROOM && floorArray[xx + 1, yy] == tileType.FLOOR || floorArray[xx - 1, yy] == tileType.ITEMROOM && floorArray[xx + 1, yy] == tileType.FLOOR || floorArray[xx - 1, yy] == tileType.SHOPROOM && floorArray[xx + 1, yy] == tileType.FLOOR) {
+                            floorArray[xx, yy] = tileType.CONNECTION;
+                        }
+                        //Room Left, Room Right
+                        if (floorArray[xx - 1, yy] == tileType.ROOM && floorArray[xx + 1, yy] == tileType.ROOM) {
+                            floorArray[xx, yy] = tileType.CONNECTION;
+                        }
+                        //Floor Down, Room Up
+                        if (floorArray[xx, yy - 1] == tileType.FLOOR && floorArray[xx, yy + 1] == tileType.ROOM || floorArray[xx, yy - 1] == tileType.FLOOR && floorArray[xx, yy + 1] == tileType.ITEMROOM || floorArray[xx, yy - 1] == tileType.FLOOR && floorArray[xx, yy + 1] == tileType.SHOPROOM) {
+                            floorArray[xx, yy] = tileType.CONNECTION;
+                        }
+                        //Floor Up, Room Down
+                        if (floorArray[xx, yy - 1] == tileType.ROOM && floorArray[xx, yy + 1] == tileType.FLOOR || floorArray[xx, yy - 1] == tileType.ITEMROOM && floorArray[xx, yy + 1] == tileType.FLOOR || floorArray[xx, yy - 1] == tileType.SHOPROOM && floorArray[xx, yy + 1] == tileType.FLOOR) {
+                            floorArray[xx, yy] = tileType.CONNECTION;
+                        }
+                        //Room Up, Room Down
+                        if (floorArray[xx, yy - 1] == tileType.ROOM && floorArray[xx, yy + 1] == tileType.ROOM || floorArray[xx, yy - 1] == tileType.ROOM && floorArray[xx, yy + 1] == tileType.ITEMROOM || floorArray[xx, yy - 1] == tileType.ROOM && floorArray[xx, yy + 1] == tileType.SHOPROOM) {
+                            floorArray[xx, yy] = tileType.CONNECTION;
+                        }
+                    }
+                }
+            }
+
+            //Create connections for rooms
+            for (int xx = 1; xx < floorInfo.floorWidth - 1; xx++) {
+                for (int yy = 1; yy < floorInfo.floorHeight - 1; yy++) {
+                    //Found upper lefthand corner of room
+                    if (floorArray[xx, yy] == tileType.ROOM || floorArray[xx, yy] == tileType.ITEMROOM || floorArray[xx, yy] == tileType.SHOPROOM) {
+                        int roomWidth = 0;
+                        int roomHeight = 0;
+                        while (floorArray[xx + roomWidth, yy] == tileType.ROOM || floorArray[xx + roomWidth, yy] == tileType.ITEMROOM || floorArray[xx + roomWidth, yy] == tileType.SHOPROOM) {
+                            roomWidth++;
+                        }
+                        while (floorArray[xx, yy + roomHeight] == tileType.ROOM || floorArray[xx, yy + roomHeight] == tileType.ITEMROOM || floorArray[xx, yy + roomHeight] == tileType.SHOPROOM) {
+                            roomHeight++;
+                        }
+                        List<Vector2Int> northConnections = new List<Vector2Int>();
+                        List<Vector2Int> southConnections = new List<Vector2Int>();
+                        List<Vector2Int> eastConnections = new List<Vector2Int>();
+                        List<Vector2Int> westConnections = new List<Vector2Int>();
+                        for (int roomX = -1; roomX < roomWidth + 1; roomX++) {
+                            for (int roomY = -1; roomY < roomHeight + 1; roomY++) {
+                                if (floorArray[xx + roomX, yy + roomY] == tileType.CONNECTION) {
+                                    if (roomX == -1) { eastConnections.Add(new Vector2Int(xx + roomX, yy + roomY)); }
+                                    if (roomX == roomWidth) { westConnections.Add(new Vector2Int(xx + roomX, yy + roomY)); }
+
+                                    if (roomY == -1) { northConnections.Add(new Vector2Int(xx + roomX, yy + roomY)); }
+                                    if (roomY == roomHeight) { southConnections.Add(new Vector2Int(xx + roomX, yy + roomY)); }
+                                }
                             }
                         }
-                    }
-                    List<string> connectionDirs = new List<string>();
-                    for (int i = 0; i < (roomWidth * roomHeight) / (floorInfo.roomMin * floorInfo.roomMin);i++) {
-                        connectionDirs.Clear();
-                        if (northConnections.Any()) { connectionDirs.Add("N"); }
-                        if (eastConnections.Any()) { connectionDirs.Add("E"); }
-                        if (southConnections.Any()) { connectionDirs.Add("S"); }
-                        if (westConnections.Any()) { connectionDirs.Add("W"); }
+                        List<string> connectionDirs = new List<string>();
+                        for (int i = 0; i < (roomWidth * roomHeight) / (floorInfo.roomMin * floorInfo.roomMin); i++) {
+                            connectionDirs.Clear();
+                            if (northConnections.Any()) { connectionDirs.Add("N"); }
+                            if (eastConnections.Any()) { connectionDirs.Add("E"); }
+                            if (southConnections.Any()) { connectionDirs.Add("S"); }
+                            if (westConnections.Any()) { connectionDirs.Add("W"); }
 
-                        Vector2Int newConnection;
-                        if (connectionDirs.Count == 0) { continue; }
-                        
-                        switch (connectionDirs[Random.Range(0, connectionDirs.Count)]) {
-                            case "N":
-                                newConnection = northConnections[Random.Range(0, northConnections.Count)];
-                                foreach (Vector2Int cellLocation in northConnections) { floorArray[cellLocation.x, cellLocation.y] = tileType.VOID; }
-                                floorArray[newConnection.x, newConnection.y] = tileType.FLOOR;
-                                northConnections.Clear();
-                                break;
-                            case "S":
-                                newConnection = southConnections[Random.Range(0, southConnections.Count)];
-                                foreach (Vector2Int cellLocation in southConnections) { floorArray[cellLocation.x, cellLocation.y] = tileType.VOID; }
-                                floorArray[newConnection.x, newConnection.y] = tileType.FLOOR;
-                                southConnections.Clear();
-                                break;
-                            case "E":
-                                newConnection = eastConnections[Random.Range(0, eastConnections.Count)];
-                                foreach (Vector2Int cellLocation in eastConnections) { floorArray[cellLocation.x, cellLocation.y] = tileType.VOID; }
-                                floorArray[newConnection.x, newConnection.y] = tileType.FLOOR;
-                                eastConnections.Clear();
-                                break;
-                            case "W":
-                                newConnection = westConnections[Random.Range(0, westConnections.Count)];
-                                foreach (Vector2Int cellLocation in westConnections) { floorArray[cellLocation.x, cellLocation.y] = tileType.VOID; }
-                                floorArray[newConnection.x, newConnection.y] = tileType.FLOOR;
-                                westConnections.Clear();
-                                break;
-                            default:
-                                break;
+                            Vector2Int newConnection;
+                            if (connectionDirs.Count == 0) { continue; }
+
+                            switch (connectionDirs[Random.Range(0, connectionDirs.Count)]) {
+                                case "N":
+                                    newConnection = northConnections[Random.Range(0, northConnections.Count)];
+                                    foreach (Vector2Int cellLocation in northConnections) { floorArray[cellLocation.x, cellLocation.y] = tileType.VOID; }
+                                    floorArray[newConnection.x, newConnection.y] = tileType.FLOOR;
+                                    northConnections.Clear();
+                                    break;
+                                case "S":
+                                    newConnection = southConnections[Random.Range(0, southConnections.Count)];
+                                    foreach (Vector2Int cellLocation in southConnections) { floorArray[cellLocation.x, cellLocation.y] = tileType.VOID; }
+                                    floorArray[newConnection.x, newConnection.y] = tileType.FLOOR;
+                                    southConnections.Clear();
+                                    break;
+                                case "E":
+                                    newConnection = eastConnections[Random.Range(0, eastConnections.Count)];
+                                    foreach (Vector2Int cellLocation in eastConnections) { floorArray[cellLocation.x, cellLocation.y] = tileType.VOID; }
+                                    floorArray[newConnection.x, newConnection.y] = tileType.FLOOR;
+                                    eastConnections.Clear();
+                                    break;
+                                case "W":
+                                    newConnection = westConnections[Random.Range(0, westConnections.Count)];
+                                    foreach (Vector2Int cellLocation in westConnections) { floorArray[cellLocation.x, cellLocation.y] = tileType.VOID; }
+                                    floorArray[newConnection.x, newConnection.y] = tileType.FLOOR;
+                                    westConnections.Clear();
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        foreach (Vector2Int cellLocation in northConnections) { floorArray[cellLocation.x, cellLocation.y] = tileType.VOID; }
+                        foreach (Vector2Int cellLocation in southConnections) { floorArray[cellLocation.x, cellLocation.y] = tileType.VOID; }
+                        foreach (Vector2Int cellLocation in eastConnections) { floorArray[cellLocation.x, cellLocation.y] = tileType.VOID; }
+                        foreach (Vector2Int cellLocation in westConnections) { floorArray[cellLocation.x, cellLocation.y] = tileType.VOID; }
+                    }
+                }
+
+            }
+
+            //Remove the dead ends
+
+            for (int i = 0; i < 50; i++) {
+                for (int xx = 1; xx < floorInfo.floorWidth - 1; xx++) {
+                    for (int yy = 1; yy < floorInfo.floorHeight - 1; yy++) {
+                        //If the block is an endcap to a hall way
+                        if (floorArray[xx - 1, yy] == tileType.VOID && floorArray[xx + 1, yy] == tileType.VOID && floorArray[xx, yy - 1] == tileType.VOID && floorArray[xx, yy + 1] == tileType.FLOOR) {
+                            floorArray[xx, yy] = tileType.VOID;
+                        }
+                        if (floorArray[xx - 1, yy] == tileType.VOID && floorArray[xx + 1, yy] == tileType.VOID && floorArray[xx, yy - 1] == tileType.FLOOR && floorArray[xx, yy + 1] == tileType.VOID) {
+                            floorArray[xx, yy] = tileType.VOID;
+                        }
+                        if (floorArray[xx - 1, yy] == tileType.VOID && floorArray[xx + 1, yy] == tileType.FLOOR && floorArray[xx, yy - 1] == tileType.VOID && floorArray[xx, yy + 1] == tileType.VOID) {
+                            floorArray[xx, yy] = tileType.VOID;
+                        }
+                        if (floorArray[xx - 1, yy] == tileType.FLOOR && floorArray[xx + 1, yy] == tileType.VOID && floorArray[xx, yy - 1] == tileType.VOID && floorArray[xx, yy + 1] == tileType.VOID) {
+                            floorArray[xx, yy] = tileType.VOID;
+                        }
+                        //if the block is an island with no other connectors
+                        if (floorArray[xx - 1, yy] == tileType.VOID && floorArray[xx + 1, yy] == tileType.VOID && floorArray[xx, yy - 1] == tileType.VOID && floorArray[xx, yy + 1] == tileType.VOID) {
+                            floorArray[xx, yy] = tileType.VOID;
+                        }
+                        //If the block is an endcap to a hall way
+                        if (floorArray[xx - 1, yy] == tileType.VOID && floorArray[xx + 1, yy] == tileType.VOID && floorArray[xx, yy - 1] == tileType.VOID && floorArray[xx, yy + 1] == tileType.ROOM) {
+                            floorArray[xx, yy] = tileType.VOID;
+                        }
+                        if (floorArray[xx - 1, yy] == tileType.VOID && floorArray[xx + 1, yy] == tileType.VOID && floorArray[xx, yy - 1] == tileType.ROOM && floorArray[xx, yy + 1] == tileType.VOID) {
+                            floorArray[xx, yy] = tileType.VOID;
+                        }
+                        if (floorArray[xx - 1, yy] == tileType.VOID && floorArray[xx + 1, yy] == tileType.ROOM && floorArray[xx, yy - 1] == tileType.VOID && floorArray[xx, yy + 1] == tileType.VOID) {
+                            floorArray[xx, yy] = tileType.VOID;
+                        }
+                        if (floorArray[xx - 1, yy] == tileType.ROOM && floorArray[xx + 1, yy] == tileType.VOID && floorArray[xx, yy - 1] == tileType.VOID && floorArray[xx, yy + 1] == tileType.VOID) {
+                            floorArray[xx, yy] = tileType.VOID;
                         }
                     }
-                    foreach (Vector2Int cellLocation in northConnections) { floorArray[cellLocation.x, cellLocation.y] = tileType.VOID; }
-                    foreach (Vector2Int cellLocation in southConnections) { floorArray[cellLocation.x, cellLocation.y] = tileType.VOID; }
-                    foreach (Vector2Int cellLocation in eastConnections) { floorArray[cellLocation.x, cellLocation.y] = tileType.VOID; }
-                    foreach (Vector2Int cellLocation in westConnections) { floorArray[cellLocation.x, cellLocation.y] = tileType.VOID; }
                 }
             }
         }
+        else {
+            for (int xx = 0; xx < floorInfo.floorWidth; xx++) {
+                for (int yy = 0; yy < floorInfo.floorHeight; yy++) {
+                    if (xx == 0 || xx == floorInfo.floorWidth - 1 || yy == 0 || yy == floorInfo.floorHeight - 1) {
+                        floorArray[xx, yy] = tileType.VOID;
+                    }
+                    else {
+                        floorArray[xx, yy] = tileType.ROOM;
+                    }
 
-		//Remove the dead ends
-
-		for (int i = 0; i < 50; i++) {
-			for (int xx = 1; xx < floorInfo.floorWidth - 1; xx++) {
-				for (int yy = 1; yy < floorInfo.floorHeight - 1; yy++) {
-					//If the block is an endcap to a hall way
-					if (floorArray [xx - 1, yy] == tileType.VOID && floorArray [xx + 1, yy] == tileType.VOID && floorArray [xx, yy - 1] == tileType.VOID && floorArray [xx, yy + 1] == tileType.FLOOR) {
-						floorArray [xx, yy] = tileType.VOID;
-					}
-					if (floorArray [xx - 1, yy] == tileType.VOID && floorArray [xx + 1, yy] == tileType.VOID && floorArray [xx, yy - 1] == tileType.FLOOR && floorArray [xx, yy + 1] == tileType.VOID) {
-						floorArray [xx, yy] = tileType.VOID;
-					}
-					if (floorArray [xx - 1, yy] == tileType.VOID && floorArray [xx + 1, yy] == tileType.FLOOR && floorArray [xx, yy - 1] == tileType.VOID && floorArray [xx, yy + 1] == tileType.VOID) {
-						floorArray [xx, yy] = tileType.VOID;
-					}
-					if (floorArray [xx - 1, yy] == tileType.FLOOR && floorArray [xx + 1, yy] == tileType.VOID && floorArray [xx, yy - 1] == tileType.VOID && floorArray [xx, yy + 1] == tileType.VOID) {
-						floorArray [xx, yy] = tileType.VOID;
-					}
-					//if the block is an island with no other connectors
-					if (floorArray [xx - 1, yy] == tileType.VOID && floorArray [xx + 1, yy] == tileType.VOID && floorArray [xx, yy - 1] == tileType.VOID && floorArray [xx, yy + 1] == tileType.VOID) {
-						floorArray [xx, yy] = tileType.VOID;
-					}
-					//If the block is an endcap to a hall way
-					if (floorArray [xx - 1, yy] == tileType.VOID && floorArray [xx + 1, yy] == tileType.VOID && floorArray [xx, yy - 1] == tileType.VOID && floorArray [xx, yy + 1] == tileType.ROOM) {
-						floorArray [xx, yy] = tileType.VOID;
-					}
-					if (floorArray [xx - 1, yy] == tileType.VOID && floorArray [xx + 1, yy] == tileType.VOID && floorArray [xx, yy - 1] == tileType.ROOM && floorArray [xx, yy + 1] == tileType.VOID) {
-						floorArray [xx, yy] = tileType.VOID;
-					}
-					if (floorArray [xx - 1, yy] == tileType.VOID && floorArray [xx + 1, yy] == tileType.ROOM && floorArray [xx, yy - 1] == tileType.VOID && floorArray [xx, yy + 1] == tileType.VOID) {
-						floorArray [xx, yy] = tileType.VOID;
-					}
-					if (floorArray [xx - 1, yy] == tileType.ROOM && floorArray [xx + 1, yy] == tileType.VOID && floorArray [xx, yy - 1] == tileType.VOID && floorArray [xx, yy + 1] == tileType.VOID) {
-						floorArray [xx, yy] = tileType.VOID;
-					}
-				}
-			}
-		}
+                }
+            }
+                }
 		paintTheFloor (floorInfo.floorWidth, floorInfo.floorHeight);
 		return floorArray;
 	}
@@ -289,6 +305,9 @@ public class FloorGeneration : MonoBehaviour {
     public List<GameObject> populateTheFloor(FloorInfo floorInfo) { //Using New Floor Info Object
         List<Vector2> validRoomTiles = new List<Vector2>();
         List<GameObject> spawnedObjects = new List<GameObject>();
+
+        Debug.Log("1");
+
         //Gathering all valid room tiles
         for (int xx = 0; xx < floorArray.GetLength(0); xx++) {
             for (int yy = 0; yy < floorArray.GetLength(1); yy++) {
@@ -297,42 +316,51 @@ public class FloorGeneration : MonoBehaviour {
                 }
             }
         }
+        Debug.Log("2");
         //placing the player
         int playerStartPos = Random.Range(0, validRoomTiles.Count);
         GameObject.Find("objPlayer").transform.position = validRoomTiles[playerStartPos];
         GameObject.Find("objPlayer").GetComponent<EntityMovement>().targetPos = GameObject.Find("objPlayer").transform.position;
         validRoomTiles.RemoveAt(playerStartPos);
 
+        Debug.Log("3");
         //Placing Stairs
         int stairPos = Random.Range(0, validRoomTiles.Count);
         GameObject newStairs = Instantiate(stairs, validRoomTiles[stairPos], Quaternion.identity);
         validRoomTiles.RemoveAt(stairPos);
         spawnedObjects.Add(newStairs);
-
+        Debug.Log("4");
         //Generating Enemies
-        for (int i = 0; i < validRoomTiles.Count / 20; i++) {
-            int enemyPos = Random.Range(0, validRoomTiles.Count);
-            GameObject enemyToSpawn = floorInfo.enemyTable[GlobalFunc.ReturnIndexFromWeightedTable(Random.Range(0, floorInfo.TotalEnemyWeight), floorInfo.enemySpawnWeight)];
-            GameObject newEnemy = Instantiate(enemyToSpawn, validRoomTiles[enemyPos], Quaternion.identity);
-            newEnemy.GetComponent<EntityMovement>().targetPos = newEnemy.transform.position;
-            validRoomTiles.RemoveAt(enemyPos);
-            spawnedObjects.Add(newEnemy);
-            //Spawn Awake or Not
-            if (Random.Range(0, 100) < 40) { newEnemy.GetComponent<EntityMovement>().isSleeping = false; } else { newEnemy.GetComponent<EntityMovement>().isSleeping = true; }
-        }
-        //Placing Loot
-        for (int i = 0; i < validRoomTiles.Count / 20; i++) {
-            //Choose Loot Position
-            int lootPos = Random.Range(0, validRoomTiles.Count);
-            //Choose Loot to Spawn
-            Item itemToSpawn = floorInfo.itemTable[GlobalFunc.ReturnIndexFromWeightedTable(Random.Range(0, floorInfo.TotalItemWeight), floorInfo.itemSpawnWeight)];
-            GameObject newLoot = Instantiate(itemPrefab, validRoomTiles[lootPos], Quaternion.identity);
-            newLoot.GetComponent<ItemScript>().setUp(itemToSpawn);
-            //newLoot.GetComponent<EnemyMovement>().targetPos = newLoot.transform.position;
-            validRoomTiles.RemoveAt(lootPos);
-            spawnedObjects.Add(newLoot);
+        if (!floorInfo.peacefulFloor) {
+            for (int i = 0; i < validRoomTiles.Count / 20; i++) {
+                int enemyPos = Random.Range(0, validRoomTiles.Count);
+                GameObject enemyToSpawn = floorInfo.enemyTable[GlobalFunc.ReturnIndexFromWeightedTable(Random.Range(0, floorInfo.TotalEnemyWeight), floorInfo.enemySpawnWeight)];
+                GameObject newEnemy = Instantiate(enemyToSpawn, validRoomTiles[enemyPos], Quaternion.identity);
+                newEnemy.GetComponent<EntityMovement>().targetPos = newEnemy.transform.position;
+                validRoomTiles.RemoveAt(enemyPos);
+                spawnedObjects.Add(newEnemy);
+                //Spawn Awake or Not
+                if (Random.Range(0, 100) < 40) { newEnemy.GetComponent<EntityMovement>().isSleeping = false; } else { newEnemy.GetComponent<EntityMovement>().isSleeping = true; }
+            }
         }
 
+        Debug.Log("5");
+        //Placing Loot
+        if (!floorInfo.noItems) {
+            for (int i = 0; i < validRoomTiles.Count / 20; i++) {
+                //Choose Loot Position
+                int lootPos = Random.Range(0, validRoomTiles.Count);
+                //Choose Loot to Spawn
+                Item itemToSpawn = floorInfo.itemTable[GlobalFunc.ReturnIndexFromWeightedTable(Random.Range(0, floorInfo.TotalItemWeight), floorInfo.itemSpawnWeight)];
+                GameObject newLoot = Instantiate(itemPrefab, validRoomTiles[lootPos], Quaternion.identity);
+                newLoot.GetComponent<ItemScript>().setUp(itemToSpawn);
+                //newLoot.GetComponent<EnemyMovement>().targetPos = newLoot.transform.position;
+                validRoomTiles.RemoveAt(lootPos);
+                spawnedObjects.Add(newLoot);
+            }
+        }
+
+        Debug.Log("6");
         //Place Shop Items
         if (!floorInfo.noShop) {
             List<Vector2> shopTiles = GatherShopTiles();
@@ -357,16 +385,18 @@ public class FloorGeneration : MonoBehaviour {
             newLoot.gameObject.GetComponent<ItemScript>().makeBuyable();
             spawnedObjects.Add(newLoot);
         }
-
+        Debug.Log("7");
         //Place Item Room Items
         if (!floorInfo.noTreasureRoom) {
             List<Vector2> itemTiles = GatherItemRoomTiles();
-            Item itemToSpawn = floorInfo.treasureTable[GlobalFunc.ReturnIndexFromWeightedTable(Random.Range(0, floorInfo.TotalItemWeight), floorInfo.treasureSpawnWeight)];
+            Debug.Log("Choosing item");
+            Item itemToSpawn = floorInfo.treasureTable[GlobalFunc.ReturnIndexFromWeightedTable(Random.Range(0, floorInfo.TotalTreasureWeight), floorInfo.treasureSpawnWeight)];
+            Debug.Log("Item Chosen");
             GameObject newLoot = Instantiate(itemPrefab, itemTiles[12], Quaternion.identity);
             newLoot.GetComponent<ItemScript>().setUp(itemToSpawn);
             spawnedObjects.Add(newLoot);
         }
-
+        Debug.Log("8");
         return spawnedObjects;
     }
 

@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fde8308c17da5c419ae899a76f1673c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityStats: {fileID: 11400000, guid: 150e9f7ca85609f42b9a9cb77c272170, type: 2}
+  entityStats: {fileID: 11400000, guid: ccfd6ad1024185b4ab6a4368dffa9497, type: 2}
   level: 1
   exp: 0
   hpBonuses: 0

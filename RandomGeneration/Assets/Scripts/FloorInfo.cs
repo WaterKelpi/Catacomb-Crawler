@@ -13,11 +13,14 @@ public class FloorInfo : ScriptableObject
 
     public int floorWidth, floorHeight, roomMin, roomMax;
 
-    public bool noShop, noTreasureRoom;
+    public bool noShop, noTreasureRoom, oneRoom, peacefulFloor, noItems;
 
     public int TotalItemWeight { get { return GlobalFunc.GetTotalListValue(itemSpawnWeight); } }
     public int TotalEnemyWeight {        get {return GlobalFunc.GetTotalListValue(enemySpawnWeight);}    }
 
     public int TotalShopWeight { get { return GlobalFunc.GetTotalListValue(shopSpawnWeight); } }
-    
+
+    public int TotalTreasureWeight { get { return GlobalFunc.GetTotalListValue(treasureSpawnWeight); } }
+
+
 }
