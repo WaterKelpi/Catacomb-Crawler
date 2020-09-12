@@ -8,10 +8,15 @@ public class TitleScreenManager : MonoBehaviour
 {
     public RectTransform titleText, controlsText;
     public Button controlsButton, titleButton;
+    public Toggle isFullscreen;
+
+    public RectTransform mainPanel, controlsPanel, settingsPanel;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        OpenPanel(mainPanel);
     }
 
     // Update is called once per frame
@@ -41,5 +46,16 @@ public class TitleScreenManager : MonoBehaviour
 
     public void StartGame() {
         SceneManager.LoadScene("Dungeon Example");
+    }
+
+    public void ToggleFullscreen() {
+        Screen.fullScreen = isFullscreen.isOn;
+    }
+
+    public void OpenPanel(RectTransform panelToOpen) {
+        mainPanel.gameObject.SetActive(false);
+        controlsPanel.gameObject.SetActive(false);
+        settingsPanel.gameObject.SetActive(false);
+        panelToOpen.gameObject.SetActive(true);
     }
 }

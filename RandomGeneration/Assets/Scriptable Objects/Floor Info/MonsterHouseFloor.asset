@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6090c8daaf147884981e9cabe01c850d, type: 3}
-  m_Name: Big Floor
+  m_Name: MonsterHouseFloor
   m_EditorClassIdentifier: 
   enemyTable:
   - {fileID: 1148262563799728, guid: 11c302c654fcae4418a0c09d9b8b230b, type: 3}
@@ -43,12 +43,12 @@ MonoBehaviour:
   shopSpawnWeight: 01000000050000000500000003000000
   treasureSpawnWeight: 0a000000
   chestSpawnWeight: 050000000500000005000000
-  floorWidth: 55
-  floorHeight: 23
+  floorWidth: 51
+  floorHeight: 35
   roomMin: 3
   roomMax: 11
-  noShop: 1
-  noTreasureRoom: 1
-  oneRoom: 1
+  noShop: 0
+  noTreasureRoom: 0
+  oneRoom: 0
   peacefulFloor: 0
   noItems: 0

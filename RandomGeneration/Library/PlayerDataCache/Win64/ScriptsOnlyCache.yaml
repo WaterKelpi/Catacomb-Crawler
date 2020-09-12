@@ -24,6 +24,7 @@ ScriptsOnlyBuild:
     - UnityEngine.U2D.PixelPerfectCamera
     Unity.2D.Tilemap.Editor.dll:
     - UnityEditor.Tilemaps.GridBrush
+    - UnityEditor.Tilemaps.GridBrushEditor
     - UnityEditor.Tilemaps.GridPaintPaletteClipboard
     - UnityEditor.Tilemaps.GridPaintPaletteWindow
     - UnityEditor.Tilemaps.GridPaintingState
@@ -53,11 +54,8 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateMachineNode
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -71,6 +69,8 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
     - UnityEngine.UI.Slider
+    - UnityEngine.UI.Text
+    - UnityEngine.UI.Toggle
   sceneClasses:
     Assets/Scenes/Dungeon Example.unity:
     - Class: 1
@@ -217,6 +217,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11760}
     - Class: 114
+      Script: {instanceID: 11960}
+    - Class: 114
       Script: {instanceID: 12006}
     - Class: 114
       Script: {instanceID: 12506}
@@ -238,6 +240,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 13802}
     - Class: 114
       Script: {instanceID: 14034}
+    - Class: 114
+      Script: {instanceID: 14052}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -257,7 +261,7 @@ ScriptsOnlyBuild:
   scriptHashData:
   - hash:
       serializedVersion: 2
-      Hash: 2c8cb10fa9c18911aed0c909658c376c
+      Hash: fd7107e9e7cfb5565f9a2235f34be223
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: FloorManager
@@ -395,7 +399,7 @@ ScriptsOnlyBuild:
     className: WeaponHandler
   - hash:
       serializedVersion: 2
-      Hash: cb59b2191ce25c9dfc81a6998d8f9e28
+      Hash: e714fe1ebe2d938c3616585b6a21b9bf
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Item
@@ -683,7 +687,7 @@ ScriptsOnlyBuild:
     className: Physics2DRaycaster
   - hash:
       serializedVersion: 2
-      Hash: dee700d1ce0443a345b3169cc1876d63
+      Hash: 594188acf6bcd214b8ce6c0a7ff7a0a6
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: TitleScreenManager
@@ -707,7 +711,7 @@ ScriptsOnlyBuild:
     className: TimelineAsset
   - hash:
       serializedVersion: 2
-      Hash: 529fae0dd76f073c5e9391d9887973b0
+      Hash: f36f41c94a1d71a925f4fadfea1a1f23
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: FloorInfo

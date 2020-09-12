@@ -93,4 +93,11 @@ public class GlobalFunc : MonoBehaviour
             return totalValue;
         }
     }
+
+    static public bool HasLineOfSight(GameObject objectSeeing, GameObject objectToSee, float sightRange,Vector2 directionToLook) {
+        RaycastHit2D hit;
+        hit = Physics2D.Raycast(objectSeeing.transform.position, directionToLook, sightRange);
+        if (hit.collider == null) { return false; }
+        return hit.collider.gameObject == objectToSee ? true : false;
+    }
 }

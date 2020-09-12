@@ -49,7 +49,7 @@ public class EntityManager : MonoBehaviour {
         statHandler = GetComponent<EntityStatHandler>();
         inventory = GetComponent<InventoryManager>();
         aMH = GameObject.Find("Game Manager").GetComponent<AdventureMenuHandler>();
-        playerControlled = GetComponent<EntityMovement>();
+        playerControlled = GetComponent<EntityMovement>().playerControlled;
 
     }
 
@@ -63,6 +63,10 @@ public class EntityManager : MonoBehaviour {
     void Update()
     {
         if (statHandler.curHP <= 0) { Die(); }
+        if (lastHitBy != null && !playerControlled) {
+            GetComponent<EntityMovement>().agroObj = lastHitBy.transform;
+            GetComponent<EntityMovement>().isSleeping = false;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {

@@ -8,6 +8,7 @@ public class EntityMovement : MonoBehaviour
     public Vector2 curPos, targetPos;
     public Transform thisEntity, agroObj;
     public float moveSpeed = 5;
+    public float attackRange;
 
     GameObject gm;
     FloorManager fm;
@@ -80,8 +81,6 @@ public class EntityMovement : MonoBehaviour
                     //PC Movement
                     if (playerControlled) {
                         MoveTargetPos(new Vector2(Mathf.Round(Input.GetAxisRaw("Horizontal")), Mathf.Round(Input.GetAxisRaw("Vertical"))));
-
-
                         if (Input.GetButtonDown("RightButton") && !isMoving && canMove) {
                             canMove = false;
                             Debug.Log("ATTACK!");
@@ -173,15 +172,15 @@ public class EntityMovement : MonoBehaviour
                         }
 
                         //aDebug.Log(path.Length);
-                        if (path.Length == 1) {
+                        if (path.Length == 1 || agroObj!= null && Vector2.Distance(transform.position,agroObj.position) <= attackRange && GlobalFunc.HasLineOfSight(this.gameObject,agroObj.gameObject,attackRange,GlobalFunc.entityDirectionToVector2(curDir))) {
                             if (!isMoving && canMove) {
                                 canMove = false;
-
+                                curDir = GlobalFunc.GetDirection(path[0] - curPos);
                                 Debug.Log("ATTACK!");
                                 if (!unarmedAttack.GetComponent<WeaponHandler>().IsThrown) {
                                     GameObject newAttack;
-                                    curDir = GlobalFunc.GetDirection(path[0] - curPos);
-                                    switch (GlobalFunc.GetDirection(path[0] - curPos)) {
+                                    
+                                    switch (curDir) {
                                         case entityDirection.N:
                                             newAttack = Instantiate(unarmedAttack, ((Vector2)transform.position + unarmedAttack.GetComponent<WeaponHandler>().WeaponOffsetVert), Quaternion.identity);
                                             newAttack.GetComponent<WeaponHandler>().parentObject = this.gameObject;
