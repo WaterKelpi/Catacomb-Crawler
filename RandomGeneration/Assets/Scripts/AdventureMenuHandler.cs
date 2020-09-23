@@ -12,6 +12,7 @@ public class AdventureMenuHandler : MonoBehaviour {
         get { return isPaused; }
     }
     [SerializeField]
+    GameObject playerHealthBar;
     Slider playerHealthSlider;
 
 
@@ -117,8 +118,10 @@ public class AdventureMenuHandler : MonoBehaviour {
     {
         Time.timeScale = isPaused ? 0 : 1;
 
-        if (playerStats.MaxHP != playerHealthSlider.maxValue) { playerHealthSlider.maxValue = playerStats.MaxHP; }
-        if (playerStats.curHP != playerHealthSlider.value) { playerHealthSlider.value = playerStats.curHP; }
+        //if (playerStats.MaxHP != playerHealthSlider.maxValue) { playerHealthSlider.maxValue = playerStats.MaxHP; }
+        //if (playerStats.curHP != playerHealthSlider.value) { playerHealthSlider.value = playerStats.curHP; }
+
+        playerHealthBar.transform.GetChild(0).Find("Health").gameObject.GetComponent<Image>().fillAmount = (float)playerStats.curHP / (float)playerStats.MaxHP;
 
         //Setting Cur HP
         curHP.text = "HP  " + playerStats.curHP.ToString().PadLeft(playerStats.MaxHP.ToString().Length, ' ') + "/" + playerStats.MaxHP.ToString();
