@@ -399,6 +399,12 @@ public class AdventureMenuHandler : MonoBehaviour {
                         ChangeMenu();
                         curMenu = menuType.paused;
                     }
+                    if (Input.GetAxisRaw("Vertical") != 0 && !inputHeld) {    
+                        inputHeld = true;
+                        curRestSel -= 1 * (int)Mathf.Sign(Input.GetAxisRaw("Vertical"));
+                        if (curRestSel < 0) { curRestSel = 1; }
+                        if (curRestSel > 1) { curRestSel = 0; }
+                    }
                     break;
             }
             #endregion
@@ -587,6 +593,11 @@ public class AdventureMenuHandler : MonoBehaviour {
                         break;
                 case menuType.rest:
                     if (restPanel.gameObject.activeInHierarchy == false) { restPanel.gameObject.SetActive(true); }
+                    restText.text = "";
+                    if (curRestSel == 0) { restText.text += ">"; }
+                    restText.text += "Quick Save\n";
+                    if (curRestSel == 1) { restText.text += ">"; }
+                    restText.text += "Quit";
                     break;
             }
             #endregion
