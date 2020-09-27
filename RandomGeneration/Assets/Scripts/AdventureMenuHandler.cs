@@ -130,7 +130,11 @@ public class AdventureMenuHandler : MonoBehaviour {
         //Set Cur Level
         curLevel.text = "Lv " + playerStats.Level.ToString();
 
-        if (Input.GetKeyDown(KeyCode.R)) { SceneManager.LoadScene(SceneManager.GetActiveScene().name); }
+        if (Input.GetKeyDown(KeyCode.R)) {
+            Random.InitState(Random.Range(-2100000000, 21000000));
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        
+        }
 
 
         if (Input.GetButtonDown("Start") && GameObject.Find("objPlayer").GetComponent<EntityMovement>().CurTurn && !GameObject.Find("objPlayer").GetComponent<EntityMovement>().isMoving) {

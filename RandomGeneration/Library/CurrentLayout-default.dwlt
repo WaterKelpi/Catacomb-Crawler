@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 1037
   m_ShowMode: 4
-  m_Title: Game
+  m_Title: Scene
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_MinSize: {x: 679, y: 492}
   m_MaxSize: {x: 14002, y: 14042}
   vertical: 0
-  controlID: 79
+  controlID: 69
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 492}
   m_MaxSize: {x: 10001, y: 14042}
   vertical: 1
-  controlID: 80
+  controlID: 78
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 221}
   m_MaxSize: {x: 8003, y: 4021}
   vertical: 0
-  controlID: 81
+  controlID: 79
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -209,7 +209,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: GameView
+  m_Name: SceneView
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -220,7 +220,7 @@ MonoBehaviour:
     height: 697
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
-  m_ActualView: {fileID: 13}
+  m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 15}
   - {fileID: 16}
@@ -228,8 +228,8 @@ MonoBehaviour:
   - {fileID: 13}
   - {fileID: 18}
   - {fileID: 12}
-  m_Selected: 3
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 3
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -372,7 +372,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 1
+    m_EnableMouseInput: 0
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -432,9 +432,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 983f0000
+      m_SelectedIDs: d0360000
       m_LastClickedID: 0
-      m_ExpandedIDs: 38f1ffff42fbffff
+      m_ExpandedIDs: 62eeffff68eeffff90f7ffff9af7ffff20f9ffff88faffff5efbffff183d0000a23d0000343e00005c3e00001e4200007c4200009e420000b6420000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -817,9 +817,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 17.293995, y: 7.0004854, z: 52316.754}
+    m_Target: {x: 2.7963214, y: -1.5208426, z: 81.86432}
     speed: 2
-    m_Value: {x: 17.293995, y: 7.0004854, z: 52316.754}
+    m_Value: {x: 2.7963214, y: -1.5208426, z: 81.86432}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -870,9 +870,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 9.616221
+    m_Target: 9.108144
     speed: 2
-    m_Value: 9.616221
+    m_Value: 9.108144
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -925,7 +925,7 @@ MonoBehaviour:
   m_ViewDataDictionary: {fileID: 0}
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: -11708
+  m_LastSelectedObjectID: 16978
 --- !u!114 &18
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -1023,21 +1023,21 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scenes
+    - Assets/Scripts
     m_Globs: []
   m_ViewMode: 1
   m_StartGridSize: 37
   m_LastFolders:
-  - Assets/Scenes
+  - Assets/Scripts
   m_LastFoldersGridSize: 37
   m_LastProjectPath: C:\Users\water\OneDrive\Documents\GitHub\Catacomb-Crawler\RandomGeneration
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 8c3f0000
-    m_LastClickedID: 16268
-    m_ExpandedIDs: 00000000543f0000563f0000583f00005a3f00005c3f00005e3f0000923f000000ca9a3b
+    scrollPos: {x: 0, y: 107}
+    m_SelectedIDs: 6a3c0000
+    m_LastClickedID: 15466
+    m_ExpandedIDs: 00000000443c0000463c0000483c00004a3c00004c3c00004e3c000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1065,7 +1065,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000543f0000563f0000583f00005a3f00005c3f00005e3f0000
+    m_ExpandedIDs: 00000000443c0000463c0000483c00004a3c00004c3c00004e3c0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

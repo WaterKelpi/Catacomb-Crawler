@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class TitleScreenManager : MonoBehaviour
 {
     public RectTransform titleText, controlsText;
     public Button controlsButton, titleButton;
     public Toggle isFullscreen;
+    public TMP_InputField seedField;
 
-    public RectTransform mainPanel, controlsPanel, settingsPanel;
+    public RectTransform mainPanel, controlsPanel, settingsPanel, newGamePanel;
+
+    public int curSeed = 0;
 
 
     // Start is called before the first frame update
@@ -45,6 +49,8 @@ public class TitleScreenManager : MonoBehaviour
 
 
     public void StartGame() {
+        if (curSeed == 0) { curSeed = Random.Range(-2100000000, 21000000); } else { Random.InitState(curSeed); }
+        PlayerPrefs.SetInt("curSeed", curSeed);
         SceneManager.LoadScene("Dungeon Example");
     }
 
@@ -56,6 +62,17 @@ public class TitleScreenManager : MonoBehaviour
         mainPanel.gameObject.SetActive(false);
         controlsPanel.gameObject.SetActive(false);
         settingsPanel.gameObject.SetActive(false);
+        newGamePanel.gameObject.SetActive(false);
         panelToOpen.gameObject.SetActive(true);
+        
+    }
+
+    public void SetSeed() {
+        if (seedField.text != "") {
+            curSeed = seedField.text.GetHashCode();
+        }
+        else {
+            curSeed = 0;
+        }
     }
 }
